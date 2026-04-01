@@ -1,7 +1,7 @@
 import { useState, useEffect, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
-import { MapPin, Camera, WifiOff, ArrowLeft, Send, Navigation, Search } from "lucide-react";
+import { MapPin, Camera, WifiOff, ArrowLeft, Send, Navigation } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 import { Input } from "@/components/ui/input";
@@ -18,6 +18,9 @@ const ReportPage = () => {
   const [imagePreview, setImagePreview] = useState<string | null>(null);
   const [useAddress, setUseAddress] = useState(false);
   const [geocoding, setGeocoding] = useState(false);
+  const [suggestions, setSuggestions] = useState<Array<{ display_name: string; lat: string; lon: string }>>([]);
+  const [showSuggestions, setShowSuggestions] = useState(false);
+  const searchTimeout = useRef<ReturnType<typeof setTimeout> | null>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
@@ -69,26 +72,37 @@ const ReportPage = () => {
     }
   };
 
-  const geocodeAddress = async () => {
-    if (!address.trim()) return;
-    setGeocoding(true);
-    try {
-      const query = address.includes("Manaus") ? address : `${address}, Manaus, AM, Brasil`;
-      const res = await fetch(
-        `https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(query)}&limit=1`,
-        { headers: { "Accept-Language": "pt-BR" } }
-      );
-      const data = await res.json();
-      if (data.length > 0) {
-        setCoords({ lat: parseFloat(data[0].lat), lng: parseFloat(data[0].lon) });
-        setAddress(data[0].display_name.split(",").slice(0, 3).join(",").trim());
-        setGpsStatus("done");
-      }
-    } catch {
-      // Silently fail
-    } finally {
-      setGeocoding(false);
+  const searchAddresses = (query: string) => {
+    if (searchTimeout.current) clearTimeout(searchTimeout.current);
+    if (query.trim().length < 3) {
+      setSuggestions([]);
+      setShowSuggestions(false);
+      return;
     }
+    searchTimeout.current = setTimeout(async () => {
+      try {
+        const fullQuery = query.includes("Manaus") ? query : `${query}, Manaus, AM, Brasil`;
+        const res = await fetch(
+          `https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(fullQuery)}&limit=5&countrycodes=br`,
+          { headers: { "Accept-Language": "pt-BR" } }
+        );
+        const data = await res.json();
+        setSuggestions(data);
+        setShowSuggestions(data.length > 0);
+      } catch {
+        setSuggestions([]);
+      }
+    }, 400);
+  };
+
+  const selectSuggestion = (suggestion: { display_name: string; lat: string; lon: string }) => {
+    const shortName = suggestion.display_name.split(",").slice(0, 3).join(",").trim();
+    setAddress(shortName);
+    setCoords({ lat: parseFloat(suggestion.lat), lng: parseFloat(suggestion.lon) });
+    setGpsStatus("done");
+    setUseAddress(true);
+    setShowSuggestions(false);
+    setSuggestions([]);
   };
 
   const handleImagePick = () => {
@@ -168,41 +182,42 @@ const ReportPage = () => {
           </div>
 
           {/* Address */}
-          <div>
+          <div className="relative">
             <label className="text-sm font-semibold text-foreground mb-2 block">
               <MapPin className="h-4 w-4 inline mr-1" />
               Endereço do Foco
             </label>
-            <div className="flex gap-2">
-              <Input
-                placeholder="Ex: Rua das Flores, 120 - Centro"
-                value={address}
-                onChange={(e) => {
-                  setAddress(e.target.value);
-                  setUseAddress(true);
-                }}
-                className="bg-card flex-1"
-                maxLength={200}
-              />
-              <Button
-                type="button"
-                variant="outline"
-                size="icon"
-                onClick={geocodeAddress}
-                disabled={geocoding || !address.trim()}
-                className="shrink-0 border-primary text-primary hover:bg-primary/10"
-                title="Buscar endereço no mapa"
-              >
-                {geocoding ? (
-                  <div className="h-4 w-4 animate-spin rounded-full border-2 border-primary border-t-transparent" />
-                ) : (
-                  <Search className="h-4 w-4" />
-                )}
-              </Button>
-            </div>
+            <Input
+              placeholder="Ex: Rua das Flores, 120 - Centro"
+              value={address}
+              onChange={(e) => {
+                setAddress(e.target.value);
+                setUseAddress(true);
+                searchAddresses(e.target.value);
+              }}
+              onFocus={() => suggestions.length > 0 && setShowSuggestions(true)}
+              onBlur={() => setTimeout(() => setShowSuggestions(false), 200)}
+              className="bg-card"
+              maxLength={200}
+            />
             <p className="text-xs text-muted-foreground mt-1">
-              Digite o endereço e clique na lupa para localizar no mapa
+              Digite pelo menos 3 letras para ver sugestões de endereços em Manaus
             </p>
+            {showSuggestions && suggestions.length > 0 && (
+              <div className="absolute z-50 top-[calc(100%-1.25rem)] left-0 right-0 bg-card border border-border rounded-lg shadow-lg overflow-hidden">
+                {suggestions.map((s, i) => (
+                  <button
+                    key={i}
+                    type="button"
+                    onMouseDown={() => selectSuggestion(s)}
+                    className="w-full text-left px-4 py-3 text-sm text-foreground hover:bg-primary/10 border-b border-border last:border-b-0 transition-colors"
+                  >
+                    <MapPin className="h-3 w-3 inline mr-2 text-primary" />
+                    {s.display_name.split(",").slice(0, 4).join(",").trim()}
+                  </button>
+                ))}
+              </div>
+            )}
           </div>
 
           {/* Photo */}

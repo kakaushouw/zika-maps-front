@@ -9,6 +9,7 @@ import CitizenDashboard from "./pages/CitizenDashboard";
 import ReportPage from "./pages/ReportPage";
 import MapPage from "./pages/MapPage";
 import TrackingPage from "./pages/TrackingPage";
+import ReportDetailPage from "./pages/ReportDetailPage";
 import AgentDashboard from "./pages/AgentDashboard";
 import NotFound from "./pages/NotFound";
 
@@ -27,6 +28,7 @@ const App = () => (
             <Route path="/report" element={<ReportPage />} />
             <Route path="/map" element={<MapPage />} />
             <Route path="/tracking" element={<TrackingPage />} />
+            <Route path="/tracking/:id" element={<ReportDetailPage />} />
             <Route path="/agent" element={<AgentDashboard />} />
             <Route path="*" element={<NotFound />} />
           </Routes>
