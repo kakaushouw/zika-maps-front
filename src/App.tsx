@@ -28,6 +28,7 @@ const App = () => (
             <Route path="/report" element={<ReportPage />} />
             <Route path="/map" element={<MapPage />} />
             <Route path="/tracking" element={<TrackingPage />} />
+            <Route path="/tracking/:id" element={<ReportDetailPage />} />
             <Route path="/agent" element={<AgentDashboard />} />
             <Route path="*" element={<NotFound />} />
           </Routes>

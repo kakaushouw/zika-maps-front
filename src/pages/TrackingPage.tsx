@@ -34,7 +34,8 @@ const TrackingPage = () => {
                 initial={{ opacity: 0, x: -16 }}
                 animate={{ opacity: 1, x: 0 }}
                 transition={{ delay: i * 0.06 }}
-                className="rounded-xl bg-card p-4 border border-border"
+                onClick={() => navigate(`/tracking/${report.id}`)}
+                className="rounded-xl bg-card p-4 border border-border cursor-pointer hover:border-primary/40 transition-colors"
                 style={{ boxShadow: "var(--shadow-card)" }}
               >
                 <div className="flex items-start justify-between mb-2">
@@ -43,15 +44,20 @@ const TrackingPage = () => {
                   </p>
                   <StatusBadge status={report.status} />
                 </div>
+                {report.address && (
+                  <p className="text-xs text-muted-foreground mb-1 truncate">
+                    <MapPin className="h-3 w-3 inline mr-1" />
+                    {report.address}
+                  </p>
+                )}
                 <div className="flex items-center gap-3 text-xs text-muted-foreground">
                   <span className="flex items-center gap-1">
                     <Calendar className="h-3 w-3" />
                     {report.date}
                   </span>
-                  <span className="flex items-center gap-1">
-                    <MapPin className="h-3 w-3" />
-                    {report.lat.toFixed(3)}, {report.lng.toFixed(3)}
-                  </span>
+                  {report.imageUrl && (
+                    <span className="text-primary text-xs">📷 Com foto</span>
+                  )}
                 </div>
               </motion.div>
             ))
