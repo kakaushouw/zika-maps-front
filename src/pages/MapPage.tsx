@@ -49,18 +49,31 @@ const MapPage = () => {
       }
     });
 
-    // Add heatmap
-    const heatData: [number, number, number][] = reports.map((r) => [r.lat, r.lng, 0.8]);
+    // Add heatmap — intensity increases with nearby report density
+    const activeReports = reports.filter((r) => r.status !== "discarded");
+    const heatData: [number, number, number][] = activeReports.map((r) => {
+      // Count nearby reports within ~500m to boost intensity
+      const nearby = activeReports.filter(
+        (other) => Math.abs(other.lat - r.lat) < 0.005 && Math.abs(other.lng - r.lng) < 0.005
+      ).length;
+      const intensity = Math.min(1, 0.3 + nearby * 0.25);
+      return [r.lat, r.lng, intensity];
+    });
     if (heatData.length > 0) {
       const heat = (L as any).heatLayer(heatData, {
-        radius: 35,
-        blur: 25,
-        maxZoom: 15,
+        radius: 40,
+        blur: 30,
+        maxZoom: 17,
+        max: 1.0,
         gradient: {
-          0.2: "#FDE68A",
-          0.4: "#FDBA74",
+          0.0: "#FEFCE8",
+          0.15: "#FDE68A",
+          0.3: "#FDBA74",
+          0.45: "#FB923C",
           0.6: "#F87171",
-          1.0: "#DC2626",
+          0.75: "#EF4444",
+          0.9: "#DC2626",
+          1.0: "#991B1B",
         },
       });
       heat.addTo(map);
