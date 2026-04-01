@@ -18,6 +18,9 @@ const ReportPage = () => {
   const [imagePreview, setImagePreview] = useState<string | null>(null);
   const [useAddress, setUseAddress] = useState(false);
   const [geocoding, setGeocoding] = useState(false);
+  const [suggestions, setSuggestions] = useState<Array<{ display_name: string; lat: string; lon: string }>>([]);
+  const [showSuggestions, setShowSuggestions] = useState(false);
+  const searchTimeout = useRef<ReturnType<typeof setTimeout> | null>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
