@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
 import { MapPin, Camera, WifiOff, ArrowLeft, Send } from "lucide-react";
@@ -11,32 +11,65 @@ const ReportPage = () => {
   const navigate = useNavigate();
   const [description, setDescription] = useState("");
   const [gpsStatus, setGpsStatus] = useState<"loading" | "done" | "error">("loading");
+  const [coords, setCoords] = useState<{ lat: number; lng: number } | null>(null);
   const [isOffline, setIsOffline] = useState(!navigator.onLine);
   const [imagePreview, setImagePreview] = useState<string | null>(null);
+  const fileInputRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
-    const timer = setTimeout(() => setGpsStatus("done"), 2000);
+    // Real geolocation
+    if ("geolocation" in navigator) {
+      navigator.geolocation.getCurrentPosition(
+        (position) => {
+          setCoords({
+            lat: position.coords.latitude,
+            lng: position.coords.longitude,
+          });
+          setGpsStatus("done");
+        },
+        (err) => {
+          console.error("GPS error:", err);
+          // Fallback to Manaus center
+          setCoords({ lat: -3.119, lng: -60.0217 });
+          setGpsStatus("done");
+        },
+        { enableHighAccuracy: true, timeout: 15000 }
+      );
+    } else {
+      setCoords({ lat: -3.119, lng: -60.0217 });
+      setGpsStatus("done");
+    }
+
     const handleOnline = () => setIsOffline(false);
     const handleOffline = () => setIsOffline(true);
     window.addEventListener("online", handleOnline);
     window.addEventListener("offline", handleOffline);
     return () => {
-      clearTimeout(timer);
       window.removeEventListener("online", handleOnline);
       window.removeEventListener("offline", handleOffline);
     };
   }, []);
 
   const handleImagePick = () => {
-    // Simulate image pick
-    setImagePreview("data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjAwIiBoZWlnaHQ9IjE1MCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cmVjdCB3aWR0aD0iMjAwIiBoZWlnaHQ9IjE1MCIgZmlsbD0iI2UyZThmMCIvPjx0ZXh0IHg9IjUwJSIgeT0iNTAlIiBkb21pbmFudC1iYXNlbGluZT0ibWlkZGxlIiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSIjOTRhM2I4IiBmb250LXNpemU9IjE0Ij7wn5OxIEZvdG8gYW5leGFkYTwvdGV4dD48L3N2Zz4=");
+    fileInputRef.current?.click();
+  };
+
+  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+
+    const reader = new FileReader();
+    reader.onload = (ev) => {
+      setImagePreview(ev.target?.result as string);
+    };
+    reader.readAsDataURL(file);
   };
 
   const handleSubmit = () => {
     addReport({
       description: description || "Foco registrado via app",
-      lat: -23.55 + Math.random() * 0.02 - 0.01,
-      lng: -46.63 + Math.random() * 0.02 - 0.01,
+      lat: coords?.lat ?? -3.119,
+      lng: coords?.lng ?? -60.0217,
       imageUrl: imagePreview || undefined,
     });
     navigate("/tracking");
@@ -45,6 +78,15 @@ const ReportPage = () => {
   return (
     <PageTransition>
       <div className="min-h-screen bg-background flex flex-col">
+        {/* Hidden file input */}
+        <input
+          ref={fileInputRef}
+          type="file"
+          accept="image/*"
+          className="hidden"
+          onChange={handleFileChange}
+        />
+
         {/* Header */}
         <div className="flex items-center px-5 py-4 bg-card border-b border-border">
           <h1 className="font-heading text-lg font-bold text-foreground">Registrar Foco</h1>
@@ -65,15 +107,19 @@ const ReportPage = () => {
         <div className="flex-1 px-5 py-6 space-y-6">
           {/* GPS Status */}
           <div className="flex items-center gap-3 rounded-xl bg-card p-4 border border-border" style={{ boxShadow: "var(--shadow-card)" }}>
-            <div className={`rounded-full p-2 ${gpsStatus === "done" ? "bg-primary/10" : "bg-muted"}`}>
-              <MapPin className={`h-5 w-5 ${gpsStatus === "done" ? "text-primary" : "text-muted-foreground"}`} />
+            <div className={`rounded-full p-2 ${gpsStatus === "done" ? "bg-primary/10" : gpsStatus === "error" ? "bg-destructive/10" : "bg-muted"}`}>
+              <MapPin className={`h-5 w-5 ${gpsStatus === "done" ? "text-primary" : gpsStatus === "error" ? "text-destructive" : "text-muted-foreground"}`} />
             </div>
             <div>
               <p className="text-sm font-semibold text-foreground">
-                {gpsStatus === "loading" ? "Obtendo localização..." : "Localização obtida ✓"}
+                {gpsStatus === "loading" ? "Obtendo localização..." : gpsStatus === "error" ? "Erro no GPS" : "Localização obtida ✓"}
               </p>
               <p className="text-xs text-muted-foreground">
-                {gpsStatus === "loading" ? "Aguarde o GPS" : "Lat: -23.5505, Lng: -46.6333"}
+                {gpsStatus === "loading"
+                  ? "Aguarde o GPS"
+                  : coords
+                  ? `Lat: ${coords.lat.toFixed(4)}, Lng: ${coords.lng.toFixed(4)}`
+                  : "Usando localização padrão"}
               </p>
             </div>
             {gpsStatus === "loading" && (
@@ -90,7 +136,7 @@ const ReportPage = () => {
               className="w-full rounded-xl border-2 border-dashed border-border bg-card p-8 flex flex-col items-center gap-2 hover:border-primary/40 transition-colors"
             >
               {imagePreview ? (
-                <img src={imagePreview} alt="Preview" className="rounded-lg max-h-32" />
+                <img src={imagePreview} alt="Preview" className="rounded-lg max-h-40 object-cover" />
               ) : (
                 <>
                   <Camera className="h-8 w-8 text-muted-foreground" />

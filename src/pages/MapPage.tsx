@@ -4,86 +4,110 @@ import { ArrowLeft } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import PageTransition from "@/components/PageTransition";
 import { useReports } from "@/lib/store";
-
-const heatColors = ["#FDE68A", "#FDBA74", "#F87171", "#DC2626"];
+import { useEffect, useRef } from "react";
+import L from "leaflet";
+import "leaflet/dist/leaflet.css";
+import "leaflet.heat";
 
 const MapPage = () => {
   const navigate = useNavigate();
   const reports = useReports();
+  const mapRef = useRef<HTMLDivElement>(null);
+  const mapInstanceRef = useRef<L.Map | null>(null);
+
+  useEffect(() => {
+    if (!mapRef.current || mapInstanceRef.current) return;
+
+    // Center on Manaus
+    const map = L.map(mapRef.current, {
+      zoomControl: false,
+    }).setView([-3.119, -60.0217], 12);
+
+    L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
+      attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>',
+    }).addTo(map);
+
+    L.control.zoom({ position: "topright" }).addTo(map);
+
+    mapInstanceRef.current = map;
+
+    return () => {
+      map.remove();
+      mapInstanceRef.current = null;
+    };
+  }, []);
+
+  // Update markers and heatmap when reports change
+  useEffect(() => {
+    const map = mapInstanceRef.current;
+    if (!map) return;
+
+    // Clear existing layers (except tile layer)
+    map.eachLayer((layer) => {
+      if (!(layer instanceof L.TileLayer)) {
+        map.removeLayer(layer);
+      }
+    });
+
+    // Add heatmap
+    const heatData: [number, number, number][] = reports.map((r) => [r.lat, r.lng, 0.8]);
+    if (heatData.length > 0) {
+      const { heatLayer } = require("leaflet.heat") as typeof import("leaflet.heat");
+      const heat = heatLayer(heatData, {
+        radius: 35,
+        blur: 25,
+        maxZoom: 15,
+        gradient: {
+          0.2: "#FDE68A",
+          0.4: "#FDBA74",
+          0.6: "#F87171",
+          1.0: "#DC2626",
+        },
+      });
+      heat.addTo(map);
+    }
+
+    // Add pins
+    reports.forEach((report) => {
+      const color =
+        report.status === "confirmed"
+          ? "#2F9E6E"
+          : report.status === "pending"
+          ? "#EAB308"
+          : report.status === "resolved"
+          ? "#3B82F6"
+          : "#9CA3AF";
+
+      const icon = L.divIcon({
+        className: "custom-pin",
+        html: `<div style="background:${color};width:24px;height:24px;border-radius:50%;border:3px solid white;box-shadow:0 2px 6px rgba(0,0,0,0.3);"></div>`,
+        iconSize: [24, 24],
+        iconAnchor: [12, 12],
+      });
+
+      L.marker([report.lat, report.lng], { icon })
+        .addTo(map)
+        .bindPopup(
+          `<div style="font-size:13px"><strong>${report.description}</strong><br/><span style="color:${color};font-weight:600;text-transform:capitalize">${report.status}</span></div>`
+        );
+    });
+  }, [reports]);
 
   return (
     <PageTransition>
       <div className="min-h-screen bg-muted relative">
-        {/* Simulated Map */}
-        <div className="h-screen w-full relative overflow-hidden" style={{ background: "linear-gradient(180deg, hsl(200,30%,92%) 0%, hsl(200,20%,85%) 100%)" }}>
-          {/* Grid lines to simulate map */}
-          <svg className="absolute inset-0 w-full h-full opacity-20" xmlns="http://www.w3.org/2000/svg">
-            {Array.from({ length: 20 }).map((_, i) => (
-              <line key={`h${i}`} x1="0" y1={i * 50} x2="100%" y2={i * 50} stroke="hsl(200,20%,60%)" strokeWidth="0.5" />
-            ))}
-            {Array.from({ length: 20 }).map((_, i) => (
-              <line key={`v${i}`} x1={i * 50} y1="0" x2={i * 50} y2="100%" stroke="hsl(200,20%,60%)" strokeWidth="0.5" />
-            ))}
-          </svg>
+        <div ref={mapRef} className="h-screen w-full" />
 
-          {/* Heatmap blobs */}
-          {reports.map((report, i) => {
-            const x = 20 + ((report.lng + 46.65) * 3000) % 60;
-            const y = 20 + ((report.lat + 23.57) * 3000) % 60;
-            return (
-              <motion.div
-                key={report.id}
-                initial={{ scale: 0, opacity: 0 }}
-                animate={{ scale: 1, opacity: 0.5 }}
-                transition={{ delay: i * 0.15, duration: 0.5 }}
-                className="absolute rounded-full"
-                style={{
-                  left: `${x}%`,
-                  top: `${y}%`,
-                  width: "120px",
-                  height: "120px",
-                  background: `radial-gradient(circle, ${heatColors[i % heatColors.length]}AA 0%, transparent 70%)`,
-                  transform: "translate(-50%, -50%)",
-                }}
-              />
-            );
-          })}
-
-          {/* Pins */}
-          {reports.map((report, i) => {
-            const x = 20 + ((report.lng + 46.65) * 3000) % 60;
-            const y = 20 + ((report.lat + 23.57) * 3000) % 60;
-            const pinColor = report.status === "confirmed" ? "hsl(152,55%,38%)" :
-              report.status === "pending" ? "hsl(45,90%,55%)" :
-              report.status === "resolved" ? "hsl(200,60%,50%)" : "hsl(210,10%,65%)";
-            return (
-              <motion.div
-                key={`pin-${report.id}`}
-                initial={{ y: -20, opacity: 0 }}
-                animate={{ y: 0, opacity: 1 }}
-                transition={{ delay: i * 0.1 + 0.3 }}
-                className="absolute flex flex-col items-center"
-                style={{ left: `${x}%`, top: `${y}%`, transform: "translate(-50%, -100%)" }}
-              >
-                <div className="rounded-full p-1 shadow-lg" style={{ backgroundColor: pinColor }}>
-                  <div className="h-3 w-3 rounded-full bg-card" />
-                </div>
-                <div className="h-2 w-0.5" style={{ backgroundColor: pinColor }} />
-              </motion.div>
-            );
-          })}
-
-          {/* Map Label */}
-          <div className="absolute bottom-20 left-1/2 -translate-x-1/2 bg-card/80 backdrop-blur-sm rounded-lg px-4 py-2 text-xs text-muted-foreground border border-border">
-            Mapa interativo simulado • {reports.length} focos registrados
-          </div>
+        {/* Map Label */}
+        <div className="absolute bottom-20 left-1/2 -translate-x-1/2 bg-card/80 backdrop-blur-sm rounded-lg px-4 py-2 text-xs text-muted-foreground border border-border z-[1000]">
+          Manaus • {reports.length} focos registrados
         </div>
 
         {/* Floating back button */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
-          className="absolute bottom-6 left-1/2 -translate-x-1/2"
+          className="absolute bottom-6 left-1/2 -translate-x-1/2 z-[1000]"
         >
           <Button
             onClick={() => navigate(-1)}
