@@ -100,7 +100,11 @@ const MapPage = () => {
       L.marker([report.lat, report.lng], { icon })
         .addTo(map)
         .bindPopup(
-          `<div style="font-size:13px"><strong>${report.description}</strong><br/><span style="color:${color};font-weight:600;text-transform:capitalize">${report.status}</span></div>`
+          `<div style="font-size:13px">
+            <strong>${report.description}</strong>
+            ${report.address ? `<br/><span style="color:#666;font-size:12px">📍 ${report.address}</span>` : ""}
+            <br/><span style="color:${color};font-weight:600;text-transform:capitalize">${report.status}</span>
+          </div>`
         );
     });
   }, [reports]);

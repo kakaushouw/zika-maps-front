@@ -1,23 +1,26 @@
 import { useState, useEffect, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
-import { MapPin, Camera, WifiOff, ArrowLeft, Send } from "lucide-react";
+import { MapPin, Camera, WifiOff, ArrowLeft, Send, Navigation, Search } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
+import { Input } from "@/components/ui/input";
 import PageTransition from "@/components/PageTransition";
 import { addReport } from "@/lib/store";
 
 const ReportPage = () => {
   const navigate = useNavigate();
   const [description, setDescription] = useState("");
+  const [address, setAddress] = useState("");
   const [gpsStatus, setGpsStatus] = useState<"loading" | "done" | "error">("loading");
   const [coords, setCoords] = useState<{ lat: number; lng: number } | null>(null);
   const [isOffline, setIsOffline] = useState(!navigator.onLine);
   const [imagePreview, setImagePreview] = useState<string | null>(null);
+  const [useAddress, setUseAddress] = useState(false);
+  const [geocoding, setGeocoding] = useState(false);
   const fileInputRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
-    // Real geolocation
     if ("geolocation" in navigator) {
       navigator.geolocation.getCurrentPosition(
         (position) => {
@@ -26,10 +29,11 @@ const ReportPage = () => {
             lng: position.coords.longitude,
           });
           setGpsStatus("done");
+          // Reverse geocode to get address from GPS
+          reverseGeocode(position.coords.latitude, position.coords.longitude);
         },
         (err) => {
           console.error("GPS error:", err);
-          // Fallback to Manaus center
           setCoords({ lat: -3.119, lng: -60.0217 });
           setGpsStatus("done");
         },
@@ -50,6 +54,43 @@ const ReportPage = () => {
     };
   }, []);
 
+  const reverseGeocode = async (lat: number, lng: number) => {
+    try {
+      const res = await fetch(
+        `https://nominatim.openstreetmap.org/reverse?format=json&lat=${lat}&lon=${lng}&addressdetails=1`,
+        { headers: { "Accept-Language": "pt-BR" } }
+      );
+      const data = await res.json();
+      if (data.display_name && !useAddress) {
+        setAddress(data.display_name.split(",").slice(0, 3).join(",").trim());
+      }
+    } catch {
+      // Silently fail - address is optional
+    }
+  };
+
+  const geocodeAddress = async () => {
+    if (!address.trim()) return;
+    setGeocoding(true);
+    try {
+      const query = address.includes("Manaus") ? address : `${address}, Manaus, AM, Brasil`;
+      const res = await fetch(
+        `https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(query)}&limit=1`,
+        { headers: { "Accept-Language": "pt-BR" } }
+      );
+      const data = await res.json();
+      if (data.length > 0) {
+        setCoords({ lat: parseFloat(data[0].lat), lng: parseFloat(data[0].lon) });
+        setAddress(data[0].display_name.split(",").slice(0, 3).join(",").trim());
+        setGpsStatus("done");
+      }
+    } catch {
+      // Silently fail
+    } finally {
+      setGeocoding(false);
+    }
+  };
+
   const handleImagePick = () => {
     fileInputRef.current?.click();
   };
@@ -57,7 +98,6 @@ const ReportPage = () => {
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (!file) return;
-
     const reader = new FileReader();
     reader.onload = (ev) => {
       setImagePreview(ev.target?.result as string);
@@ -68,6 +108,7 @@ const ReportPage = () => {
   const handleSubmit = () => {
     addReport({
       description: description || "Foco registrado via app",
+      address: address || undefined,
       lat: coords?.lat ?? -3.119,
       lng: coords?.lng ?? -60.0217,
       imageUrl: imagePreview || undefined,
@@ -78,7 +119,6 @@ const ReportPage = () => {
   return (
     <PageTransition>
       <div className="min-h-screen bg-background flex flex-col">
-        {/* Hidden file input */}
         <input
           ref={fileInputRef}
           type="file"
@@ -104,17 +144,17 @@ const ReportPage = () => {
           </motion.div>
         )}
 
-        <div className="flex-1 px-5 py-6 space-y-6">
+        <div className="flex-1 px-5 py-6 space-y-5 overflow-y-auto">
           {/* GPS Status */}
           <div className="flex items-center gap-3 rounded-xl bg-card p-4 border border-border" style={{ boxShadow: "var(--shadow-card)" }}>
             <div className={`rounded-full p-2 ${gpsStatus === "done" ? "bg-primary/10" : gpsStatus === "error" ? "bg-destructive/10" : "bg-muted"}`}>
-              <MapPin className={`h-5 w-5 ${gpsStatus === "done" ? "text-primary" : gpsStatus === "error" ? "text-destructive" : "text-muted-foreground"}`} />
+              <Navigation className={`h-5 w-5 ${gpsStatus === "done" ? "text-primary" : gpsStatus === "error" ? "text-destructive" : "text-muted-foreground"}`} />
             </div>
-            <div>
+            <div className="flex-1 min-w-0">
               <p className="text-sm font-semibold text-foreground">
                 {gpsStatus === "loading" ? "Obtendo localização..." : gpsStatus === "error" ? "Erro no GPS" : "Localização obtida ✓"}
               </p>
-              <p className="text-xs text-muted-foreground">
+              <p className="text-xs text-muted-foreground truncate">
                 {gpsStatus === "loading"
                   ? "Aguarde o GPS"
                   : coords
@@ -125,6 +165,44 @@ const ReportPage = () => {
             {gpsStatus === "loading" && (
               <div className="ml-auto h-5 w-5 animate-spin rounded-full border-2 border-primary border-t-transparent" />
             )}
+          </div>
+
+          {/* Address */}
+          <div>
+            <label className="text-sm font-semibold text-foreground mb-2 block">
+              <MapPin className="h-4 w-4 inline mr-1" />
+              Endereço do Foco
+            </label>
+            <div className="flex gap-2">
+              <Input
+                placeholder="Ex: Rua das Flores, 120 - Centro"
+                value={address}
+                onChange={(e) => {
+                  setAddress(e.target.value);
+                  setUseAddress(true);
+                }}
+                className="bg-card flex-1"
+                maxLength={200}
+              />
+              <Button
+                type="button"
+                variant="outline"
+                size="icon"
+                onClick={geocodeAddress}
+                disabled={geocoding || !address.trim()}
+                className="shrink-0 border-primary text-primary hover:bg-primary/10"
+                title="Buscar endereço no mapa"
+              >
+                {geocoding ? (
+                  <div className="h-4 w-4 animate-spin rounded-full border-2 border-primary border-t-transparent" />
+                ) : (
+                  <Search className="h-4 w-4" />
+                )}
+              </Button>
+            </div>
+            <p className="text-xs text-muted-foreground mt-1">
+              Digite o endereço e clique na lupa para localizar no mapa
+            </p>
           </div>
 
           {/* Photo */}
@@ -155,6 +233,7 @@ const ReportPage = () => {
               onChange={(e) => setDescription(e.target.value)}
               className="bg-card resize-none"
               rows={3}
+              maxLength={500}
             />
           </div>
         </div>
