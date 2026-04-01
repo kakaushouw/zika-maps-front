@@ -9,6 +9,7 @@ import CitizenDashboard from "./pages/CitizenDashboard";
 import ReportPage from "./pages/ReportPage";
 import MapPage from "./pages/MapPage";
 import TrackingPage from "./pages/TrackingPage";
+import ReportDetailPage from "./pages/ReportDetailPage";
 import AgentDashboard from "./pages/AgentDashboard";
 import NotFound from "./pages/NotFound";
 
