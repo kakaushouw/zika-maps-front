@@ -42,8 +42,7 @@ const LoginPage = () => {
           className="w-full max-w-sm"
         >
           <div className="mb-8 flex flex-col items-center">
-            <img src={logo} alt="ZIKA-MAPS" width={160} height={160} className="mb-4 object-contain" />
-            <h1 className="text-2xl font-heading font-extrabold text-foreground">ZIKA-MAPS</h1>
+            <img src={logo} alt="ZIKA-MAPS" className="w-52 h-52 object-contain mix-blend-multiply" />
             <p className="mt-1 text-sm text-muted-foreground">Monitoramento inteligente de focos</p>
           </div>
 

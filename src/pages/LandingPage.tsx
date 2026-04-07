@@ -22,7 +22,7 @@ const LandingPage = () => {
           <motion.img
             src={logo}
             alt="ZIKA-MAPS"
-            className="w-44 h-44 mb-6 object-contain"
+            className="w-56 h-56 mb-6 object-contain mix-blend-multiply"
             initial={{ scale: 0, opacity: 0 }}
             animate={{ scale: 1, opacity: 1 }}
             transition={{ duration: 0.7, ease: "easeOut" }}
