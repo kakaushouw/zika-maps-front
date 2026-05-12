@@ -1,11 +1,11 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
 import { ArrowLeft, Calendar, MapPin, ChevronDown } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import PageTransition from "@/components/PageTransition";
 import StatusBadge from "@/components/StatusBadge";
-import { useReports, updateReportStatus, type Report } from "@/lib/store";
+import { useReports, updateReportStatus, startReportsSync, useAuth, type Report } from "@/lib/store";
 
 const statusOptions: { value: Report["status"]; label: string }[] = [
   { value: "pending", label: "Pendente" },
