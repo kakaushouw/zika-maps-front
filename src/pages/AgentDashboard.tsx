@@ -9,12 +9,24 @@ import { useReports, updateReportStatus, startReportsSync, signOut, useAuth, Rep
 
 const AgentDashboard = () => {
   const navigate = useNavigate();
+  const { user, loading: authLoading } = useAuth();
   const reports = useReports();
   const [selectedReport, setSelectedReport] = useState<Report | null>(null);
 
   const pendingReports = reports.filter((r) => r.status === "pending");
   const confirmedCount = reports.filter((r) => r.status === "confirmed").length;
   const resolvedCount = reports.filter((r) => r.status === "resolved").length;
+
+  useEffect(() => {
+    if (!authLoading && !user) {
+      navigate("/login");
+    }
+  }, [user, authLoading, navigate]);
+
+  useEffect(() => {
+    const cleanup = startReportsSync();
+    return cleanup;
+  }, []);
 
   return (
     <PageTransition>
