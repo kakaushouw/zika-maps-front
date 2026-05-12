@@ -168,13 +168,25 @@ const ReportPage = () => {
     reader.readAsDataURL(file);
   };
 
-  const handleSubmit = () => {
-    addReport({
+  const handleSubmit = async () => {
+    let image_url: string | undefined;
+    
+    if (fileInputRef.current?.files?.[0]) {
+      try {
+        image_url = await uploadReportImage(fileInputRef.current.files[0]);
+      } catch {
+        // Continue without image
+      }
+    } else if (imagePreview) {
+      image_url = imagePreview;
+    }
+
+    await addReport({
       description: description || "Foco registrado via app",
       address: address || undefined,
       lat: coords?.lat ?? -3.119,
       lng: coords?.lng ?? -60.0217,
-      imageUrl: imagePreview || undefined,
+      image_url,
     });
     navigate("/tracking");
   };
