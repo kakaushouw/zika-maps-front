@@ -6,7 +6,7 @@ import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 import { Input } from "@/components/ui/input";
 import PageTransition from "@/components/PageTransition";
-import { addReport, uploadReportImage } from "@/lib/store";
+import { addReport, uploadReportImage, useAuth } from "@/lib/store";
 import L from "leaflet";
 import "leaflet/dist/leaflet.css";
 
