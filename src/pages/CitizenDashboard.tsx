@@ -33,7 +33,10 @@ const CitizenDashboard = () => {
           <Button
             variant="ghost"
             size="sm"
-            onClick={() => navigate("/")}
+            onClick={async () => {
+              await signOut();
+              navigate("/login");
+            }}
             className="text-destructive hover:bg-destructive/10 font-semibold"
           >
             <LogOut className="h-4 w-4 mr-1" />
