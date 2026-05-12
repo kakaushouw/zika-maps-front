@@ -1,15 +1,28 @@
+import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
 import { MapPin, List, LogOut, Plus } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import PageTransition from "@/components/PageTransition";
-import { useReports } from "@/lib/store";
+import { useReports, signOut, startReportsSync, useAuth } from "@/lib/store";
 
 const CitizenDashboard = () => {
   const navigate = useNavigate();
+  const { user, loading } = useAuth();
   const reports = useReports();
   const myReports = reports.length;
   const pendingCount = reports.filter((r) => r.status === "pending").length;
+
+  useEffect(() => {
+    if (!loading && !user) {
+      navigate("/login");
+    }
+  }, [user, loading, navigate]);
+
+  useEffect(() => {
+    const cleanup = startReportsSync();
+    return cleanup;
+  }, []);
 
   return (
     <PageTransition>
