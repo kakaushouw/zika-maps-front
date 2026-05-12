@@ -12,6 +12,7 @@ import "leaflet/dist/leaflet.css";
 
 const ReportPage = () => {
   const navigate = useNavigate();
+  const { user, loading: authLoading } = useAuth();
   const [description, setDescription] = useState("");
   const [address, setAddress] = useState("");
   const [gpsStatus, setGpsStatus] = useState<"loading" | "done" | "error">("loading");
