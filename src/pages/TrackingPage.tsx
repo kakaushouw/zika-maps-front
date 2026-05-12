@@ -70,7 +70,7 @@ const TrackingPage = () => {
                       <Calendar className="h-3 w-3" />
                       {report.date}
                     </span>
-                    {report.imageUrl && (
+                    {report.image_url && (
                       <span className="text-primary text-xs">📷 Com foto</span>
                     )}
                   </div>

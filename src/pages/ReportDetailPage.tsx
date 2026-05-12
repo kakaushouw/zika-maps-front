@@ -47,9 +47,9 @@ const ReportDetailPage = () => {
           </div>
 
           {/* Photo */}
-          {report.imageUrl ? (
+          {report.image_url ? (
             <div className="rounded-xl overflow-hidden border border-border" style={{ boxShadow: "var(--shadow-card)" }}>
-              <img src={report.imageUrl} alt="Foto do foco" className="w-full max-h-72 object-cover" />
+              <img src={report.image_url} alt="Foto do foco" className="w-full max-h-72 object-cover" />
             </div>
           ) : (
             <div className="rounded-xl border-2 border-dashed border-border bg-card p-8 flex flex-col items-center gap-2">
