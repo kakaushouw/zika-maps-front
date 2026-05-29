@@ -46,11 +46,11 @@ O sistema público de notificação (SINAN) é passivo e depende exclusivamente 
 
 | Tela de Login | Mapa de Focos |
 |:---:|:---:|
-| ![image alt](https://github.com/kakaushouw/zika-maps-front/blob/edbb05eb737d3f5f8d54e8b2f4c1a52773096195/tela%20de%20login.png) | <img src="docs/screenshots/mapa.png" alt="Mapa" width="400"/> |
+| ![image alt](https://github.com/kakaushouw/zika-maps-front/blob/edbb05eb737d3f5f8d54e8b2f4c1a52773096195/tela%20de%20login.png) | ![image alt](https://github.com/kakaushouw/zika-maps-front/blob/edbb05eb737d3f5f8d54e8b2f4c1a52773096195/mapa%20de%20focos.png) |
 
 | Registrar Denúncia | Minhas Denúncias |
 |:---:|:---:|
-| <img src="docs/screenshots/denuncia.png" alt="Denúncia" width="400"/> | <img src="docs/screenshots/historico.png" alt="Histórico" width="400"/> |
+| ![image alt](https://github.com/kakaushouw/zika-maps-front/blob/edbb05eb737d3f5f8d54e8b2f4c1a52773096195/registrador%20de%20den%C3%BAncias.png) | ![image alt](https://github.com/kakaushouw/zika-maps-front/blob/edbb05eb737d3f5f8d54e8b2f4c1a52773096195/minhas%20den%C3%BAncias.png) |
 
 </div>
 
