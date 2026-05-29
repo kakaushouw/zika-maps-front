@@ -243,7 +243,7 @@ pytest --cov=app tests/
 | Ana Lívia da Costa Silva | Documentadora | — |
 | Vitória Santos de Azevedo | Testadora & Documentadora | — |
 | Luiz Henrique Moutinho Laranjeira | Documentador | — |
-| João Etto de Souza Gomes | Designer & Documentador | — |
+| João Etto de Souza Gomes | Designer & Documentador | [@JoaoEtto](https://github.com/JoaoEtto) |
 
 **Orientadora:** Luana Magalhães Leal
 
