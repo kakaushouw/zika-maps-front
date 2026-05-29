@@ -46,7 +46,7 @@ O sistema público de notificação (SINAN) é passivo e depende exclusivamente 
 
 | Tela de Login | Mapa de Focos |
 |:---:|:---:|
-| <img src="docs/screenshots/login.png" alt="Login" width="400"/> | <img src="docs/screenshots/mapa.png" alt="Mapa" width="400"/> |
+| ![image alt](https://github.com/kakaushouw/zika-maps-front/blob/edbb05eb737d3f5f8d54e8b2f4c1a52773096195/tela%20de%20login.png) | <img src="docs/screenshots/mapa.png" alt="Mapa" width="400"/> |
 
 | Registrar Denúncia | Minhas Denúncias |
 |:---:|:---:|
