@@ -2,19 +2,20 @@
 
 <div align="center">
 
-![image alt](https://github.com/kakaushouw/zika-maps-front/blob/9450c375245d5588922a81564a1a47effe7f477d/logo%20zikamaps.png)
+![ZikaMaps Logo](https://github.com/kakaushouw/zika-maps-front/blob/9450c375245d5588922a81564a1a47effe7f477d/logo%20zikamaps.png)
 
 **Plataforma cidadã de monitoramento e mapeamento de focos do *Aedes aegypti* em Manaus — AM**
 
-[![Status](https://img.shields.io/badge/status-em%20desenvolvimento-4AADA8?style=flat-square)](https://github.com/kakaushouw/zika-spot-guard)
+[![Status](https://img.shields.io/badge/status-em%20desenvolvimento-4AADA8?style=flat-square)](https://github.com/kakaushouw/zika-maps-front)
 [![Licença](https://img.shields.io/badge/licença-MIT-4AADA8?style=flat-square)](LICENSE)
 [![TCC](https://img.shields.io/badge/TCC-ADS%20%7C%20Fametro-4AADA8?style=flat-square)](#)
 [![Cidade](https://img.shields.io/badge/cidade-Manaus%2C%20AM-4AADA8?style=flat-square)](#)
-[![Python](https://img.shields.io/badge/python-3.11-blue?style=flat-square&logo=python)](https://python.org)
-[![PostgreSQL](https://img.shields.io/badge/PostgreSQL-PostGIS-336791?style=flat-square&logo=postgresql)](https://postgresql.org)
-[![Docker](https://img.shields.io/badge/docker-containerizado-2496ED?style=flat-square&logo=docker)](https://docker.com)
+[![React](https://img.shields.io/badge/React-18-61DAFB?style=flat-square&logo=react)](https://react.dev)
+[![TypeScript](https://img.shields.io/badge/TypeScript-5-3178C6?style=flat-square&logo=typescript)](https://typescriptlang.org)
+[![Supabase](https://img.shields.io/badge/Supabase-3ECF8E?style=flat-square&logo=supabase&logoColor=white)](https://supabase.com)
+[![Vite](https://img.shields.io/badge/Vite-5-646CFF?style=flat-square&logo=vite&logoColor=white)](https://vitejs.dev)
 
-[Reportar Bug](https://github.com/kakaushouw/zika-spot-guard/issues) · [Solicitar Feature](https://github.com/kakaushouw/zika-spot-guard/issues)
+[Reportar Bug](https://github.com/kakaushouw/zika-maps-front/issues) · [Solicitar Feature](https://github.com/kakaushouw/zika-maps-front/issues)
 
 </div>
 
@@ -46,11 +47,11 @@ O sistema público de notificação (SINAN) é passivo e depende exclusivamente 
 
 | Tela de Login | Mapa de Focos |
 |:---:|:---:|
-| ![image alt](https://github.com/kakaushouw/zika-maps-front/blob/edbb05eb737d3f5f8d54e8b2f4c1a52773096195/tela%20de%20login.png) | ![image alt](https://github.com/kakaushouw/zika-maps-front/blob/edbb05eb737d3f5f8d54e8b2f4c1a52773096195/mapa%20de%20focos.png) |
+| ![Tela de Login](https://github.com/kakaushouw/zika-maps-front/blob/edbb05eb737d3f5f8d54e8b2f4c1a52773096195/tela%20de%20login.png) | ![Mapa de Focos](https://github.com/kakaushouw/zika-maps-front/blob/edbb05eb737d3f5f8d54e8b2f4c1a52773096195/mapa%20de%20focos.png) |
 
 | Registrar Denúncia | Minhas Denúncias |
 |:---:|:---:|
-| ![image alt](https://github.com/kakaushouw/zika-maps-front/blob/edbb05eb737d3f5f8d54e8b2f4c1a52773096195/registrador%20de%20den%C3%BAncias.png) | ![image alt](https://github.com/kakaushouw/zika-maps-front/blob/edbb05eb737d3f5f8d54e8b2f4c1a52773096195/minhas%20den%C3%BAncias.png) |
+| ![Registrar Denúncia](https://github.com/kakaushouw/zika-maps-front/blob/edbb05eb737d3f5f8d54e8b2f4c1a52773096195/registrador%20de%20den%C3%BAncias.png) | ![Minhas Denúncias](https://github.com/kakaushouw/zika-maps-front/blob/edbb05eb737d3f5f8d54e8b2f4c1a52773096195/minhas%20den%C3%BAncias.png) |
 
 </div>
 
@@ -75,23 +76,20 @@ O sistema público de notificação (SINAN) é passivo e depende exclusivamente 
 
 **Front-end**
 
-[![HTML5](https://img.shields.io/badge/HTML5-E34F26?style=flat-square&logo=html5&logoColor=white)](https://developer.mozilla.org/pt-BR/docs/Web/HTML)
-[![CSS3](https://img.shields.io/badge/CSS3-1572B6?style=flat-square&logo=css3&logoColor=white)](https://developer.mozilla.org/pt-BR/docs/Web/CSS)
-[![JavaScript](https://img.shields.io/badge/JavaScript-F7DF1E?style=flat-square&logo=javascript&logoColor=black)](https://developer.mozilla.org/pt-BR/docs/Web/JavaScript)
+[![React](https://img.shields.io/badge/React%2018-61DAFB?style=flat-square&logo=react&logoColor=black)](https://react.dev)
+[![TypeScript](https://img.shields.io/badge/TypeScript-3178C6?style=flat-square&logo=typescript&logoColor=white)](https://typescriptlang.org)
+[![Vite](https://img.shields.io/badge/Vite-646CFF?style=flat-square&logo=vite&logoColor=white)](https://vitejs.dev)
+[![Tailwind CSS](https://img.shields.io/badge/Tailwind%20CSS-06B6D4?style=flat-square&logo=tailwindcss&logoColor=white)](https://tailwindcss.com)
 [![Leaflet](https://img.shields.io/badge/Leaflet.js-199900?style=flat-square&logo=leaflet&logoColor=white)](https://leafletjs.com)
 
-**Back-end**
+**Back-end & Banco de Dados**
 
-[![Python](https://img.shields.io/badge/Python%203.11-3776AB?style=flat-square&logo=python&logoColor=white)](https://python.org)
-[![Flask](https://img.shields.io/badge/Flask-000000?style=flat-square&logo=flask&logoColor=white)](https://flask.palletsprojects.com)
-
-**Banco de Dados**
-
-[![PostgreSQL](https://img.shields.io/badge/PostgreSQL-336791?style=flat-square&logo=postgresql&logoColor=white)](https://postgresql.org)
-[![PostGIS](https://img.shields.io/badge/PostGIS-4AADA8?style=flat-square)](https://postgis.net)
 [![Supabase](https://img.shields.io/badge/Supabase-3ECF8E?style=flat-square&logo=supabase&logoColor=white)](https://supabase.com)
+[![PostgreSQL](https://img.shields.io/badge/PostgreSQL-336791?style=flat-square&logo=postgresql&logoColor=white)](https://postgresql.org)
+[![Python](https://img.shields.io/badge/Python%203.11-3776AB?style=flat-square&logo=python&logoColor=white)](https://python.org)
+[![PostGIS](https://img.shields.io/badge/PostGIS-4AADA8?style=flat-square)](https://postgis.net)
 
-**Ferramentas**
+**Ferramentas & Infraestrutura**
 
 [![Docker](https://img.shields.io/badge/Docker-2496ED?style=flat-square&logo=docker&logoColor=white)](https://docker.com)
 [![Git](https://img.shields.io/badge/Git-F05032?style=flat-square&logo=git&logoColor=white)](https://git-scm.com)
@@ -101,72 +99,65 @@ O sistema público de notificação (SINAN) é passivo e depende exclusivamente 
 
 ## 🚀 Começando
 
+Este repositório contém o **front-end** do ZikaMaps. Para rodar o projeto localmente você precisa ter o Node.js instalado e configurar as variáveis de ambiente do Supabase.
+
 ### 📦 Pré-requisitos
 
-Antes de começar, certifique-se de ter instalado:
-
-* [Python](https://python.org/) `>= 3.11`
-* [PostgreSQL](https://postgresql.org/) `>= 14` com extensão [PostGIS](https://postgis.net/)
-* [Docker](https://docker.com/) *(opcional, recomendado)*
+* [Node.js](https://nodejs.org/) `>= 18.x`
+* [npm](https://npmjs.com/) ou [bun](https://bun.sh/)
 * [Git](https://git-scm.com/)
+* Uma conta no [Supabase](https://supabase.com) *(ou use as credenciais do projeto)*
 
 ### 💻 Instalação
 
 1. **Clone o repositório**
 ```bash
-git clone https://github.com/kakaushouw/zika-spot-guard.git
+git clone https://github.com/kakaushouw/zika-maps-front.git
 ```
 
 2. **Acesse a pasta do projeto**
 ```bash
-cd zika-spot-guard
+cd zika-maps-front
 ```
 
-3. **Crie e ative o ambiente virtual**
+3. **Instale as dependências**
+
+Com npm:
 ```bash
-python -m venv venv
-
-# Linux / macOS
-source venv/bin/activate
-
-# Windows
-venv\Scripts\activate
+npm install
 ```
 
-4. **Instale as dependências**
+Ou com bun:
 ```bash
-pip install -r requirements.txt
+bun install
 ```
 
-5. **Configure as variáveis de ambiente**
-```bash
-cp .env.example .env
-```
+4. **Configure as variáveis de ambiente**
 
-Edite o arquivo `.env` com suas configurações:
+Crie um arquivo `.env` na raiz do projeto com o seguinte conteúdo:
 ```env
-DATABASE_URL=postgresql://usuario:senha@localhost:5432/zikamaps
-FLASK_ENV=development
-SECRET_KEY=sua_chave_secreta_aqui
-PORT=5000
-OSM_TILE_URL=https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png
+VITE_SUPABASE_URL=sua_url_do_supabase
+VITE_SUPABASE_PUBLISHABLE_KEY=sua_chave_anonima_do_supabase
+VITE_SUPABASE_PROJECT_ID=seu_project_id
 ```
 
-6. **Configure o banco de dados**
+> ⚠️ Nunca compartilhe suas chaves reais publicamente. Você encontra essas informações no painel do Supabase em **Project Settings → API**.
+
+5. **Execute o projeto**
+
+Com npm:
 ```bash
-psql -U postgres -c "CREATE DATABASE zikamaps;"
-psql -U postgres -d zikamaps -c "CREATE EXTENSION postgis;"
-python manage.py db upgrade
+npm run dev
 ```
 
-7. **Execute o projeto**
+Ou com bun:
 ```bash
-python app.py
+bun dev
 ```
 
-8. **Acesse no navegador**
+6. **Acesse no navegador**
 ```
-http://localhost:5000
+http://localhost:8080
 ```
 
 ---
@@ -175,17 +166,17 @@ http://localhost:5000
 
 ### Perfil Cidadão
 
-1. Cadastre-se ou faça login com seu e-mail
+1. Cadastre-se ou faça login com seu e-mail na tela inicial
 2. Na tela **Mapa**, visualize os focos registrados na sua região
-3. Clique em **Denunciar** — o sistema captura sua localização via GPS, tire ou envie uma foto do criadouro, adicione uma descrição opcional e confirme o envio
+3. Clique em **Denunciar** — o sistema captura sua localização via GPS automaticamente, tire ou envie uma foto do criadouro, adicione uma descrição opcional e confirme o envio
 4. Acompanhe o status das suas denúncias em **Minhas Denúncias**
 
 ### Perfil Agente de Vigilância Sanitária
 
 1. Faça login com e-mail institucional de agente
-2. Acesse o **Painel de Gestão** para visualizar todas as denúncias
+2. Acesse o **Painel de Gestão** para visualizar todas as denúncias recebidas
 3. Analise a imagem e a localização de cada foco
-4. Altere o status para **Confirmado** ou **Descartado**
+4. Altere o status para **Confirmado** (foco válido) ou **Descartado** (inválido)
 5. Após a intervenção em campo, marque o foco como **Resolvido**
 
 ---
@@ -193,55 +184,81 @@ http://localhost:5000
 ## 🗂️ Estrutura de Pastas
 
 ```
-📦 zika-spot-guard
-├── 📁 app/
-│   ├── 📁 routes/         # Rotas da API REST (Flask Blueprints)
-│   ├── 📁 models/         # Modelos do banco de dados (ORM)
-│   ├── 📁 services/       # Regras de negócio e lógica de geolocalização
-│   └── 📁 utils/          # Funções auxiliares
-├── 📁 frontend/
-│   ├── 📁 css/            # Estilos da interface
-│   ├── 📁 js/             # Scripts e integração com Leaflet.js
-│   └── 📁 pages/          # Páginas HTML
-├── 📁 docs/
-│   ├── 📁 assets/         # Logo e recursos visuais
-│   └── 📁 screenshots/    # Capturas de tela para o README
-├── 📁 migrations/         # Migrações do banco de dados
-├── 📁 tests/              # Testes automatizados
-├── 📄 app.py              # Ponto de entrada da aplicação
-├── 📄 requirements.txt
-├── 📄 docker-compose.yml
-├── 📄 README.md
-└── 📄 .env.example
+📦 zika-maps-front/
+├── 📁 public/              # Assets estáticos públicos
+├── 📁 src/                 # Código-fonte principal
+│   ├── 📁 components/      # Componentes React reutilizáveis
+│   ├── 📁 hooks/           # Custom hooks
+│   ├── 📁 integrations/    # Integrações externas (Supabase)
+│   ├── 📁 lib/             # Funções utilitárias
+│   ├── 📁 pages/           # Telas da aplicação
+│   └── 📄 main.tsx         # Ponto de entrada da aplicação
+├── 📁 supabase/            # Configurações e migrations do Supabase
+├── 📄 .env                 # Variáveis de ambiente (não commitar chaves reais)
+├── 📄 index.html           # HTML principal
+├── 📄 package.json         # Dependências e scripts do projeto
+├── 📄 vite.config.ts       # Configuração do Vite
+├── 📄 tailwind.config.ts   # Configuração do Tailwind CSS
+├── 📄 tsconfig.json        # Configuração do TypeScript
+└── 📄 README.md
 ```
 
 ---
 
 ## 🧪 Testes
 
-Execute os testes com:
+O projeto utiliza **Vitest** para testes unitários e **Playwright** para testes end-to-end.
+
+Rodar os testes unitários:
 ```bash
-pytest
+npm run test
 ```
 
-Para cobertura de testes:
+Rodar os testes em modo watch:
 ```bash
-pytest --cov=app tests/
+npm run test:watch
 ```
+
+---
+
+## 🤝 Contribuindo
+
+Contribuições são bem-vindas!
+
+1. Faça um **Fork** do projeto
+2. Crie uma **Branch** para sua feature
+```bash
+git checkout -b feature/MinhaFeature
+```
+3. **Commit** suas mudanças
+```bash
+git commit -m 'feat: adiciona MinhaFeature'
+```
+4. **Push** para a branch
+```bash
+git push origin feature/MinhaFeature
+```
+5. Abra um **Pull Request**
+
+---
+
+## 📄 Licença
+
+Este projeto está licenciado sob a licença **MIT**. Veja o arquivo [LICENSE](LICENSE) para mais detalhes.
 
 ---
 
 ## 👥 Equipe
 
-| Nome | Papel | GitHub |
-|------|-------|--------|
-| Kaell Soares Calacina | Desenvolvedor & Documentador | [@kakaushouw](https://github.com/kakaushouw) |
-| Ana Lívia da Costa Silva | Documentadora | [@liviacosttaa](https://github.com/liviacosttaa) |
-| Vitória Santos de Azevedo | Testadora & Documentadora | [@csvick](https://github.com/csvick) |
-| Luiz Henrique Moutinho Laranjeira | Documentador | [@luizhmoutinho](https://github.com/luizhmoutinho) |
-| João Etto de Souza Gomes | Designer & Documentador | [@JoaoEtto](https://github.com/JoaoEtto) |
+| Nome | Papel | GitHub | LinkedIn | Email |
+|------|-------|--------|----------|-------|
+| Kaell Soares Calacina | Desenvolvedor & Documentador | [@kakaushouw](https://github.com/kakaushouw) | — | — |
+| Ana Lívia da Costa Silva | Documentadora | [@liviacosttaa](https://github.com/liviacosttaa) | — | analiviasas@gmail.com |
+| Vitória Santos de Azevedo | Testadora & Documentadora | [@csvick](https://github.com/csvick) | — | vitoriaazevedo.r91@gmail.com |
+| Luiz Henrique Moutinho Laranjeira | Documentador | [@luizhmoutinho](https://github.com/luizhmoutinho) | — | luizhmoutinho@gmail.com |
+| João Etto de Souza Gomes | Designer & Documentador | [@JoaoEtto](https://github.com/JoaoEtto) | [LinkedIn](https://www.linkedin.com/in/joão-etto-7b6775323) | joaoettogomes@gmail.com |
 
-**Orientadora:** Luana Magalhães Leal
+**Orientadora:** Luana Magalhães Leal — prof.luanalealm@gmail.com
 
 ---
 
