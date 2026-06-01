@@ -236,9 +236,9 @@ pytest --cov=app tests/
 | Nome | Papel | GitHub |
 |------|-------|--------|
 | Kaell Soares Calacina | Desenvolvedor & Documentador | [@kakaushouw](https://github.com/kakaushouw) |
-| Ana Lívia da Costa Silva | Documentadora | — |
-| Vitória Santos de Azevedo | Testadora & Documentadora | — |
-| Luiz Henrique Moutinho Laranjeira | Documentador | — |
+| Ana Lívia da Costa Silva | Documentadora | [@liviacosttaa](https://github.com/liviacosttaa) |
+| Vitória Santos de Azevedo | Testadora & Documentadora | [@csvick](https://github.com/csvick) |
+| Luiz Henrique Moutinho Laranjeira | Documentador | [@luizhmoutinho](https://github.com/luizhmoutinho) |
 | João Etto de Souza Gomes | Designer & Documentador | [@JoaoEtto](https://github.com/JoaoEtto) |
 
 **Orientadora:** Luana Magalhães Leal
