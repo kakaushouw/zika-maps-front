@@ -1,214 +1,282 @@
+# 🦟 ZikaMaps
+
 <div align="center">
 
-<img src="https://raw.githubusercontent.com/kakaushouw/zika-spot-guard/main/public/logo.png" alt="ZikaMaps Logo" width="120"/>
+![ZikaMaps Logo](https://github.com/kakaushouw/zika-maps-front/blob/9450c375245d5588922a81564a1a47effe7f477d/logo%20zikamaps.png)
 
-# ZIKAMAPS
-### Monitoramento de Arbovírus
+**Plataforma cidadã de monitoramento e mapeamento de focos do *Aedes aegypti* em Manaus — AM**
 
-**Plataforma de vigilância participativa para o combate ao _Aedes aegypti_ em Manaus — AM**
-
-[![Status](https://img.shields.io/badge/status-em%20desenvolvimento-4AADA8?style=flat-square)](https://github.com/kakaushouw/zika-spot-guard)
+[![Status](https://img.shields.io/badge/status-em%20desenvolvimento-4AADA8?style=flat-square)](https://github.com/kakaushouw/zika-maps-front)
 [![Licença](https://img.shields.io/badge/licença-MIT-4AADA8?style=flat-square)](LICENSE)
-[![TCC](https://img.shields.io/badge/TCC-ADS-4AADA8?style=flat-square)](#)
-[![Manaus](https://img.shields.io/badge/cidade-Manaus%2C%20AM-4AADA8?style=flat-square)](#)
+[![TCC](https://img.shields.io/badge/TCC-ADS%20%7C%20Fametro-4AADA8?style=flat-square)](#)
+[![Cidade](https://img.shields.io/badge/cidade-Manaus%2C%20AM-4AADA8?style=flat-square)](#)
+[![React](https://img.shields.io/badge/React-18-61DAFB?style=flat-square&logo=react)](https://react.dev)
+[![TypeScript](https://img.shields.io/badge/TypeScript-5-3178C6?style=flat-square&logo=typescript)](https://typescriptlang.org)
+[![Supabase](https://img.shields.io/badge/Supabase-3ECF8E?style=flat-square&logo=supabase&logoColor=white)](https://supabase.com)
+[![Vite](https://img.shields.io/badge/Vite-5-646CFF?style=flat-square&logo=vite&logoColor=white)](https://vitejs.dev)
 
-[Sobre](#sobre) · [Funcionalidades](#funcionalidades) · [Tecnologias](#tecnologias) · [Como rodar](#como-rodar) · [Estrutura](#estrutura-do-projeto) · [Screenshots](#screenshots) · [Contribuir](#contribuindo) · [Equipe](#equipe)
+[Reportar Bug](https://github.com/kakaushouw/zika-maps-front/issues) · [Solicitar Feature](https://github.com/kakaushouw/zika-maps-front/issues)
 
 </div>
 
 ---
 
-## Sobre
+## 📋 Sobre o Projeto
 
-O **ZikaMaps** é uma aplicação mobile de vigilância epidemiológica participativa, desenvolvida como Trabalho de Conclusão de Curso (TCC) no curso de **Análise e Desenvolvimento de Sistemas (ADS)**.
+O **ZikaMaps** é uma plataforma web colaborativa de monitoramento e mapeamento da proliferação de mosquitos causadores de arboviroses, desenvolvida como Trabalho de Conclusão de Curso (TCC) no curso de **Análise e Desenvolvimento de Sistemas (ADS)** no Centro Universitário Fametro — Manaus, AM.
 
-O sistema permite que qualquer cidadão de Manaus registre focos do *Aedes aegypti* — o mosquito transmissor da Dengue, Zika e Chikungunya — diretamente pelo celular, com geolocalização automática e captura de fotos como evidência. As denúncias são exibidas em um mapa de calor em tempo real, auxiliando a vigilância sanitária na priorização de recursos e no combate à subnotificação.
-
-> **Problema que resolve:** O sistema público de notificação (SINAN) é passivo e depende de profissionais de saúde. O ZikaMaps transforma o morador em agente ativo da vigilância sanitária do seu próprio bairro.
+O sistema público de notificação (SINAN) é passivo e depende exclusivamente de profissionais de saúde, gerando subnotificação massiva de focos do *Aedes aegypti* — mosquito transmissor da Dengue, Zika e Chikungunya. O ZikaMaps resolve isso transformando o próprio morador em agente ativo da vigilância sanitária do seu bairro: qualquer cidadão pode registrar pelo navegador, com geolocalização automática e foto como evidência.
 
 ---
 
-## Funcionalidades
+## ✨ Principais Funcionalidades
 
-### 👤 Interface do Cidadão
-- **Denúncia em 3 etapas** — geolocalização automática via GPS, foto do foco e confirmação
-- **Captura de foto** integrada (câmera ou galeria) para validação da equipe de vigilância
-- **Modo offline** — registro garantido mesmo sem internet, com sincronização automática posterior
-- **Histórico de denúncias** com acompanhamento de status (Pendente / Confirmado / Resolvido)
-
-### 🗺️ Visualização de Dados
-- **Mapa georreferenciado** com marcadores por status de cada foco registrado
-- **Mapa de calor** para identificação visual das zonas críticas de infestação em tempo real
-- **Transparência comunitária** — qualquer cidadão pode ver a distribuição espacial dos focos no bairro
-
-### 🏥 Painel de Gestão (Agente de Saúde)
-- **Dashboard estratégico** com visão consolidada dos focos ativos, confirmados e resolvidos
-- **Alteração de status** de denúncias diretamente pelo painel
-- **Otimização de rotas** — direcionamento preciso de agentes para os epicentros de infestação
+* 📍 **Geolocalização automática** — captura a posição do cidadão via GPS ao registrar um foco, sem necessidade de inserir endereço manualmente
+* 🗺️ **Mapa de calor em tempo real** — visualização interativa via Leaflet.js sobre OpenStreetMap, mostrando a densidade de focos por bairro
+* 📸 **Registro com foto** — o cidadão tira ou envia uma foto do criadouro como evidência, aumentando a confiabilidade das denúncias
+* 🏥 **Painel do Agente Sanitário** — interface exclusiva para agentes de vigilância confirmarem, descartarem e marcarem focos como resolvidos
+* 📊 **Histórico de denúncias** — cada cidadão acompanha o status de todas as suas denúncias em tempo real
 
 ---
 
-## Tecnologias
+## 🎬 Demonstração
 
-| Camada | Tecnologia |
-|--------|-----------|
-| Frontend Mobile | React Native |
-| Mapas | Leaflet / OpenStreetMap |
-| Backend | Node.js |
-| Banco de Dados | Firebase / Supabase |
-| Autenticação | Firebase Auth |
-| Geolocalização | API de Geolocalização do navegador (GPS nativo) |
-| Design / Prototipação | Figma |
-| Versionamento | Git + GitHub |
+### 📸 Screenshots
+
+<div align="center">
+
+| Tela de Login | Mapa de Focos |
+|:---:|:---:|
+| ![Tela de Login](https://github.com/kakaushouw/zika-maps-front/blob/edbb05eb737d3f5f8d54e8b2f4c1a52773096195/tela%20de%20login.png) | ![Mapa de Focos](https://github.com/kakaushouw/zika-maps-front/blob/edbb05eb737d3f5f8d54e8b2f4c1a52773096195/mapa%20de%20focos.png) |
+
+| Registrar Denúncia | Minhas Denúncias |
+|:---:|:---:|
+| ![Registrar Denúncia](https://github.com/kakaushouw/zika-maps-front/blob/edbb05eb737d3f5f8d54e8b2f4c1a52773096195/registrador%20de%20den%C3%BAncias.png) | ![Minhas Denúncias](https://github.com/kakaushouw/zika-maps-front/blob/edbb05eb737d3f5f8d54e8b2f4c1a52773096195/minhas%20den%C3%BAncias.png) |
+
+</div>
+
+### 🎞️ GIF Demonstrativo
+
+<div align="center">
+  <img src="docs/demo.gif" alt="Demonstração do fluxo de denúncia no ZikaMaps" width="80%"/>
+</div>
+
+### 🎥 Vídeo Demonstrativo
+
+> **[VÍDEO DEMONSTRATIVO]** — *(link será adicionado aqui)*
 
 ---
 
-## Como Rodar
+## 🛠️ Tecnologias Utilizadas
 
-### Pré-requisitos
+**Design & Prototipação**
 
-- Node.js `>= 18.x`
-- npm ou yarn
-- Git
+[![Figma](https://img.shields.io/badge/Figma-F24E1E?style=flat-square&logo=figma&logoColor=white)](https://figma.com)
+[![Lovable](https://img.shields.io/badge/Lovable%20Dev-FF6B6B?style=flat-square)](https://lovable.dev)
 
-### Instalação
+**Front-end**
 
+[![React](https://img.shields.io/badge/React%2018-61DAFB?style=flat-square&logo=react&logoColor=black)](https://react.dev)
+[![TypeScript](https://img.shields.io/badge/TypeScript-3178C6?style=flat-square&logo=typescript&logoColor=white)](https://typescriptlang.org)
+[![Vite](https://img.shields.io/badge/Vite-646CFF?style=flat-square&logo=vite&logoColor=white)](https://vitejs.dev)
+[![Tailwind CSS](https://img.shields.io/badge/Tailwind%20CSS-06B6D4?style=flat-square&logo=tailwindcss&logoColor=white)](https://tailwindcss.com)
+[![Leaflet](https://img.shields.io/badge/Leaflet.js-199900?style=flat-square&logo=leaflet&logoColor=white)](https://leafletjs.com)
+
+**Back-end & Banco de Dados**
+
+[![Supabase](https://img.shields.io/badge/Supabase-3ECF8E?style=flat-square&logo=supabase&logoColor=white)](https://supabase.com)
+[![PostgreSQL](https://img.shields.io/badge/PostgreSQL-336791?style=flat-square&logo=postgresql&logoColor=white)](https://postgresql.org)
+[![Python](https://img.shields.io/badge/Python%203.11-3776AB?style=flat-square&logo=python&logoColor=white)](https://python.org)
+[![PostGIS](https://img.shields.io/badge/PostGIS-4AADA8?style=flat-square)](https://postgis.net)
+
+**Ferramentas & Infraestrutura**
+
+[![Docker](https://img.shields.io/badge/Docker-2496ED?style=flat-square&logo=docker&logoColor=white)](https://docker.com)
+[![Git](https://img.shields.io/badge/Git-F05032?style=flat-square&logo=git&logoColor=white)](https://git-scm.com)
+[![GitHub](https://img.shields.io/badge/GitHub-181717?style=flat-square&logo=github&logoColor=white)](https://github.com)
+
+---
+
+## 🚀 Começando
+
+Este repositório contém o **front-end** do ZikaMaps. Para rodar o projeto localmente você precisa ter o Node.js instalado e configurar as variáveis de ambiente do Supabase.
+
+### 📦 Pré-requisitos
+
+* [Node.js](https://nodejs.org/) `>= 18.x`
+* [npm](https://npmjs.com/) ou [bun](https://bun.sh/)
+* [Git](https://git-scm.com/)
+* Uma conta no [Supabase](https://supabase.com) *(ou use as credenciais do projeto)*
+
+### 💻 Instalação
+
+1. **Clone o repositório**
 ```bash
-# 1. Clone o repositório
-git clone https://github.com/kakaushouw/zika-spot-guard.git
+git clone https://github.com/kakaushouw/zika-maps-front.git
+```
 
-# 2. Entre na pasta do projeto
-cd zika-spot-guard
+2. **Acesse a pasta do projeto**
+```bash
+cd zika-maps-front
+```
 
-# 3. Instale as dependências
+3. **Instale as dependências**
+
+Com npm:
+```bash
 npm install
+```
 
-# 4. Configure as variáveis de ambiente
-cp .env.example .env
-# Edite o arquivo .env com suas chaves de API
+Ou com bun:
+```bash
+bun install
+```
 
-# 5. Inicie o servidor de desenvolvimento
+4. **Configure as variáveis de ambiente**
+
+Crie um arquivo `.env` na raiz do projeto com o seguinte conteúdo:
+```env
+VITE_SUPABASE_URL=sua_url_do_supabase
+VITE_SUPABASE_PUBLISHABLE_KEY=sua_chave_anonima_do_supabase
+VITE_SUPABASE_PROJECT_ID=seu_project_id
+```
+
+> ⚠️ Nunca compartilhe suas chaves reais publicamente. Você encontra essas informações no painel do Supabase em **Project Settings → API**.
+
+5. **Execute o projeto**
+
+Com npm:
+```bash
 npm run dev
 ```
 
-### Variáveis de Ambiente
-
-Crie um arquivo `.env` na raiz do projeto com as seguintes variáveis:
-
-```env
-# Mapa
-VITE_MAP_TILE_URL=https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png
-
-# Firebase (ou Supabase)
-VITE_FIREBASE_API_KEY=sua_chave_aqui
-VITE_FIREBASE_AUTH_DOMAIN=seu_dominio_aqui
-VITE_FIREBASE_PROJECT_ID=seu_projeto_aqui
+Ou com bun:
+```bash
+bun dev
 ```
 
-> ⚠️ **Nunca commite o arquivo `.env` com suas chaves reais.** O `.gitignore` já está configurado para ignorá-lo.
-
----
-
-## Estrutura do Projeto
-
+6. **Acesse no navegador**
 ```
-zika-spot-guard/
-├── public/                 # Assets estáticos (logo, ícones)
-├── src/
-│   ├── components/         # Componentes reutilizáveis
-│   │   ├── Map/            # Componentes do mapa e marcadores
-│   │   ├── Report/         # Fluxo de denúncia (3 etapas)
-│   │   └── Dashboard/      # Painel de gestão
-│   ├── pages/              # Telas principais
-│   │   ├── Login.jsx
-│   │   ├── Home.jsx
-│   │   ├── MapView.jsx
-│   │   ├── ReportForm.jsx
-│   │   └── MyReports.jsx
-│   ├── services/           # Integração com API e banco de dados
-│   ├── hooks/              # Custom hooks (useGeolocation, useReports...)
-│   ├── context/            # Gerenciamento de estado global
-│   └── styles/             # Estilos globais e tokens de design
-├── .env.example
-├── .gitignore
-└── README.md
+http://localhost:8080
 ```
 
 ---
 
-## Screenshots
+## 📖 Como Usar
 
-> Wireframes e protótipos de alta fidelidade desenvolvidos no Figma.
+### Perfil Cidadão
 
-| Mapa de Focos | Registrar Denúncia | Confirmar Envio | Minhas Denúncias |
-|:---:|:---:|:---:|:---:|
-| Visualização georreferenciada dos focos com status em tempo real | Captura de foto e localização automática via GPS | Formulário com endereço e descrição opcional | Histórico com acompanhamento de status |
+1. Cadastre-se ou faça login com seu e-mail na tela inicial
+2. Na tela **Mapa**, visualize os focos registrados na sua região
+3. Clique em **Denunciar** — o sistema captura sua localização via GPS automaticamente, tire ou envie uma foto do criadouro, adicione uma descrição opcional e confirme o envio
+4. Acompanhe o status das suas denúncias em **Minhas Denúncias**
 
----
+### Perfil Agente de Vigilância Sanitária
 
-## Contexto Acadêmico
-
-Este projeto é desenvolvido como **Trabalho de Conclusão de Curso (TCC)** no curso de Análise e Desenvolvimento de Sistemas, com foco na interseção entre:
-
-- **Engenharia de Software** — arquitetura, requisitos e implementação da aplicação
-- **UX/UI Design** — pesquisa de usuário, wireframes, prototipação e testes de usabilidade
-- **Saúde Pública Digital** — vigilância epidemiológica participativa e combate à subnotificação
-
-A metodologia de pesquisa adotada é o **Design Science Research (DSR)**, com avaliação de usabilidade pela **Escala SUS (System Usability Scale)**.
-
-**Contexto geográfico:** Manaus — AM, cidade com alta incidência de arboviroses e desafios únicos de conectividade em áreas periféricas.
+1. Faça login com e-mail institucional de agente
+2. Acesse o **Painel de Gestão** para visualizar todas as denúncias recebidas
+3. Analise a imagem e a localização de cada foco
+4. Altere o status para **Confirmado** (foco válido) ou **Descartado** (inválido)
+5. Após a intervenção em campo, marque o foco como **Resolvido**
 
 ---
 
-## Roadmap
+## 🗂️ Estrutura de Pastas
 
-- [x] Autenticação (cidadão e agente de saúde)
-- [x] Fluxo de denúncia com geolocalização e foto
-- [x] Mapa com marcadores por status
-- [x] Painel de gestão com alteração de status
-- [x] Histórico de denúncias do usuário
-- [ ] Mapa de calor (heatmap)
-- [ ] Modo offline com sincronização automática
-- [ ] Notificações push para o cidadão
-- [ ] Painel analítico para a vigilância sanitária
-- [ ] Testes de usabilidade com escala SUS
-
----
-
-## Contribuindo
-
-Contribuições são bem-vindas! Se quiser sugerir melhorias, reportar bugs ou propor novas funcionalidades:
-
-1. Fork o repositório
-2. Crie uma branch para sua feature (`git checkout -b feature/minha-feature`)
-3. Commit suas alterações (`git commit -m 'feat: adiciona minha feature'`)
-4. Push para a branch (`git push origin feature/minha-feature`)
-5. Abra um Pull Request
+```
+📦 zika-maps-front/
+├── 📁 public/              # Assets estáticos públicos
+├── 📁 src/                 # Código-fonte principal
+│   ├── 📁 components/      # Componentes React reutilizáveis
+│   ├── 📁 hooks/           # Custom hooks
+│   ├── 📁 integrations/    # Integrações externas (Supabase)
+│   ├── 📁 lib/             # Funções utilitárias
+│   ├── 📁 pages/           # Telas da aplicação
+│   └── 📄 main.tsx         # Ponto de entrada da aplicação
+├── 📁 supabase/            # Configurações e migrations do Supabase
+├── 📄 .env                 # Variáveis de ambiente (não commitar chaves reais)
+├── 📄 index.html           # HTML principal
+├── 📄 package.json         # Dependências e scripts do projeto
+├── 📄 vite.config.ts       # Configuração do Vite
+├── 📄 tailwind.config.ts   # Configuração do Tailwind CSS
+├── 📄 tsconfig.json        # Configuração do TypeScript
+└── 📄 README.md
+```
 
 ---
 
-## Equipe
+## 🧪 Testes
 
-Desenvolvido por estudantes do curso de **Análise e Desenvolvimento de Sistemas**.
+O projeto utiliza **Vitest** para testes unitários e **Playwright** para testes end-to-end.
 
-| Nome | Papel |
-|------|-------|
-| *Kaell Calacina* | desenvolvedor do sistema e documentador |
-| *Ana Lívia* | documentadora |
-| *Vitória Azevedo* | testadora e documentadora |
-| *Luiz Henrique* | documentador |
-| *João Etto* | designer e documentador|
+Rodar os testes unitários:
+```bash
+npm run test
+```
+
+Rodar os testes em modo watch:
+```bash
+npm run test:watch
+```
 
 ---
 
-## Licença
+## 🤝 Contribuindo
+
+Contribuições são bem-vindas!
+
+1. Faça um **Fork** do projeto
+2. Crie uma **Branch** para sua feature
+```bash
+git checkout -b feature/MinhaFeature
+```
+3. **Commit** suas mudanças
+```bash
+git commit -m 'feat: adiciona MinhaFeature'
+```
+4. **Push** para a branch
+```bash
+git push origin feature/MinhaFeature
+```
+5. Abra um **Pull Request**
+
+---
+
+## 📄 Licença
 
 Este projeto está licenciado sob a licença **MIT**. Veja o arquivo [LICENSE](LICENSE) para mais detalhes.
 
 ---
 
+## 👥 Equipe
+
+| Nome | Papel | GitHub | LinkedIn | Email |
+|------|-------|--------|----------|-------|
+| Kaell Soares Calacina | Desenvolvedor & Documentador | [@kakaushouw](https://github.com/kakaushouw) | — | — |
+| Ana Lívia da Costa Silva | Documentadora e analista | [@liviacosttaa](https://github.com/liviacosttaa) | — | analiviasas@gmail.com |
+| Vitória Santos de Azevedo | Testadora & Documentadora | [@csvick](https://github.com/csvick) | — | vitoriaazevedo.r91@gmail.com |
+| Luiz Henrique Moutinho Laranjeira | Documentador | [@luizhmoutinho](https://github.com/luizhmoutinho) | — | luizhmoutinho@gmail.com |
+| João Etto de Souza Gomes | Designer & Documentador | [@JoaoEtto](https://github.com/JoaoEtto) | [LinkedIn](https://www.linkedin.com/in/joão-etto-7b6775323) | joaoettogomes@gmail.com |
+
+**Orientadora:** Luana Magalhães Leal — prof.luanalealm@gmail.com
+
+---
+
+## 🙏 Agradecimentos
+
+* À professora orientadora **Luana Magalhães Leal** pelo suporte durante o desenvolvimento do TCC
+* À **Fametro** pela estrutura acadêmica e oportunidade de desenvolver o projeto
+* Ao [OpenStreetMap](https://openstreetmap.org) pela base cartográfica gratuita e aberta
+* Ao [Leaflet.js](https://leafletjs.com) pela biblioteca de mapas interativos
+
+---
+
 <div align="center">
 
-Feito com 🦟 em Manaus, AM · TCC — ADS
+⭐ Se este projeto foi útil, considere dar uma estrela!
+
+Manaus, AM · TCC — ADS Fametro 2026
+
+feito com amor by equipe
 
 </div>
