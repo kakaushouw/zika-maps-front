@@ -14,7 +14,7 @@
 [![PostgreSQL](https://img.shields.io/badge/PostgreSQL-PostGIS-336791?style=flat-square&logo=postgresql)](https://postgresql.org)
 [![Docker](https://img.shields.io/badge/docker-containerizado-2496ED?style=flat-square&logo=docker)](https://docker.com)
 
-[Demo ao Vivo](#) · [Reportar Bug](https://github.com/kakaushouw/zika-spot-guard/issues) · [Solicitar Feature](https://github.com/kakaushouw/zika-spot-guard/issues)
+[Reportar Bug](https://github.com/kakaushouw/zika-spot-guard/issues) · [Solicitar Feature](https://github.com/kakaushouw/zika-spot-guard/issues)
 
 </div>
 
@@ -22,9 +22,9 @@
 
 ## 📋 Sobre o Projeto
 
-O **ZikaMaps** é uma plataforma web colaborativa de vigilância epidemiológica participativa, desenvolvida como Trabalho de Conclusão de Curso (TCC) no curso de **Análise e Desenvolvimento de Sistemas (ADS)** no Centro Universitário Fametro — Manaus, AM.
+O **ZikaMaps** é uma plataforma web colaborativa de monitoramento e mapeamento da proliferação de mosquitos causadores de arboviroses, desenvolvida como Trabalho de Conclusão de Curso (TCC) no curso de **Análise e Desenvolvimento de Sistemas (ADS)** no Centro Universitário Fametro — Manaus, AM.
 
-O sistema público de notificação (SINAN) é passivo e depende exclusivamente de profissionais de saúde, gerando subnotificação massiva de focos do *Aedes aegypti* — mosquito transmissor da Dengue, Zika e Chikungunya. O ZikaMaps resolve isso transformando o próprio morador em agente ativo da vigilância sanitária do seu bairro: qualquer cidadão pode registrar criadouros pelo navegador, com geolocalização automática e foto como evidência.
+O sistema público de notificação (SINAN) é passivo e depende exclusivamente de profissionais de saúde, gerando subnotificação massiva de focos do *Aedes aegypti* — mosquito transmissor da Dengue, Zika e Chikungunya. O ZikaMaps resolve isso transformando o próprio morador em agente ativo da vigilância sanitária do seu bairro: qualquer cidadão pode registrar pelo navegador, com geolocalização automática e foto como evidência.
 
 ---
 
