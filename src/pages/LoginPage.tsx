@@ -6,7 +6,6 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import PageTransition from "@/components/PageTransition";
 import { signIn, signUp, getUserRole } from "@/lib/store";
-import { lovable } from "@/integrations/lovable/index";
 import logo from "@/assets/logo.png";
 
 const LoginPage = () => {
@@ -47,42 +46,30 @@ const LoginPage = () => {
   };
 
   const handleGoogleSignIn = async () => {
-    setLoading(true);
-    try {
-      const result = await lovable.auth.signInWithOAuth("google", {
-        redirect_uri: window.location.origin,
-      });
-
-      if (result.error) {
-        setError(result.error.message || "Erro no login com Google.");
-        setLoading(false);
-        return;
-      }
-
-      if (result.redirected) {
-        // Browser will redirect
-        return;
-      }
-
-      const userRole = await getUserRole();
-      navigate(userRole === "agent" ? "/agent" : "/dashboard");
-    } catch (err: any) {
-      setError(err.message || "Erro no login com Google.");
-      setLoading(false);
-    }
+    setError("O login social com Google está configurado para o ambiente de produção. Para desenvolvimento local, utilize e-mail e senha.");
   };
 
   return (
     <PageTransition>
-      <div className="flex min-h-screen flex-col items-center justify-center bg-secondary px-6">
+      <div className="flex min-h-screen flex-col items-center justify-center bg-secondary/30 px-6 relative overflow-hidden">
+        {/* Glow circles for modern mesh background */}
+        <div className="absolute top-1/4 left-1/4 w-80 h-80 rounded-full bg-primary/10 blur-[100px] pointer-events-none" />
+        <div className="absolute bottom-1/4 right-1/4 w-96 h-96 rounded-full bg-accent/15 blur-[120px] pointer-events-none" />
+
         <motion.div
-          initial={{ scale: 0.9, opacity: 0 }}
-          animate={{ scale: 1, opacity: 1 }}
-          transition={{ duration: 0.4 }}
-          className="w-full max-w-sm"
+          initial={{ scale: 0.95, opacity: 0, y: 15 }}
+          animate={{ scale: 1, opacity: 1, y: 0 }}
+          transition={{ duration: 0.4, ease: "easeOut" }}
+          className="w-full max-w-sm bg-white/80 backdrop-blur-xl rounded-3xl border border-white/60 p-8 shadow-2xl relative z-10"
         >
-          <div className="mb-8 flex flex-col items-center">
-            <img src={logo} alt="ZIKA-MAPS" className="w-64 h-64 object-contain" />
+          <div className="mb-6 flex flex-col items-center">
+            <motion.img
+              src={logo}
+              alt="ZIKA-MAPS"
+              className="w-40 h-40 object-contain drop-shadow-md"
+              whileHover={{ scale: 1.05, rotate: 2 }}
+              transition={{ type: "spring", stiffness: 300 }}
+            />
           </div>
 
           {error && (
@@ -97,43 +84,47 @@ const LoginPage = () => {
 
           <form onSubmit={handleSubmit} className="space-y-4">
             <div className="relative">
-              <Mail className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+              <Mail className="absolute left-3.5 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
               <Input
                 type="email"
                 placeholder="E-mail"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
-                className="pl-10 bg-card"
+                className="pl-11 bg-white/70 border-muted focus-visible:ring-primary focus-visible:border-primary rounded-xl h-11"
               />
             </div>
 
             <div className="relative">
-              <Lock className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+              <Lock className="absolute left-3.5 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
               <Input
                 type={showPassword ? "text" : "password"}
                 placeholder="Senha"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
-                className="pl-10 pr-10 bg-card"
+                className="pl-11 pr-10 bg-white/70 border-muted focus-visible:ring-primary focus-visible:border-primary rounded-xl h-11"
               />
               <button
                 type="button"
                 onClick={() => setShowPassword(!showPassword)}
-                className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground"
+                className="absolute right-3.5 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground transition-colors"
               >
                 {showPassword ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
               </button>
             </div>
 
             {!isLogin && (
-              <div className="flex gap-2">
+              <motion.div
+                initial={{ opacity: 0, height: 0 }}
+                animate={{ opacity: 1, height: "auto" }}
+                className="flex gap-2 p-1 bg-muted/60 rounded-xl border border-border/50"
+              >
                 <button
                   type="button"
                   onClick={() => setRole("citizen")}
-                  className={`flex-1 py-2 rounded-lg text-sm font-semibold border transition-colors ${
+                  className={`flex-1 py-2 rounded-lg text-xs font-bold transition-all ${
                     role === "citizen"
-                      ? "bg-primary text-primary-foreground border-primary"
-                      : "bg-card text-foreground border-border"
+                      ? "bg-white text-foreground shadow-sm"
+                      : "text-muted-foreground hover:text-foreground"
                   }`}
                 >
                   Cidadão
@@ -141,22 +132,25 @@ const LoginPage = () => {
                 <button
                   type="button"
                   onClick={() => setRole("agent")}
-                  className={`flex-1 py-2 rounded-lg text-sm font-semibold border transition-colors ${
+                  className={`flex-1 py-2 rounded-lg text-xs font-bold transition-all ${
                     role === "agent"
-                      ? "bg-primary text-primary-foreground border-primary"
-                      : "bg-card text-foreground border-border"
+                      ? "bg-white text-foreground shadow-sm"
+                      : "text-muted-foreground hover:text-foreground"
                   }`}
                 >
                   Agente
                 </button>
-              </div>
+              </motion.div>
             )}
 
             <Button
               type="submit"
               disabled={loading}
-              className="w-full bg-primary text-primary-foreground hover:bg-primary/90 font-semibold text-base py-5"
-              style={{ boxShadow: "var(--shadow-button)" }}
+              className="w-full text-white font-bold text-sm h-11 rounded-xl transition-all duration-300 hover:opacity-95 hover:scale-[1.01]"
+              style={{
+                background: "var(--gradient-hero)",
+                boxShadow: "0 8px 20px -4px hsl(152 55% 38% / 0.3)"
+              }}
             >
               {loading ? "Carregando..." : isLogin ? "Entrar" : "Criar Conta"}
             </Button>
@@ -168,7 +162,7 @@ const LoginPage = () => {
               variant="outline"
               disabled={loading}
               onClick={handleGoogleSignIn}
-              className="w-full gap-2 border-border hover:bg-card"
+              className="w-full gap-2 border-border hover:bg-white/80 bg-white/40 h-11 rounded-xl text-sm font-bold text-foreground/80 hover:text-foreground transition-all"
             >
               <svg className="h-5 w-5" viewBox="0 0 24 24">
                 <path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92a5.06 5.06 0 0 1-2.2 3.33v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.11z"/>
@@ -180,20 +174,20 @@ const LoginPage = () => {
             </Button>
           </div>
 
-          <div className="mt-2 text-center">
+          <div className="mt-3 text-center">
             <button
               onClick={() => navigate("/forgot-password")}
-              className="text-sm text-muted-foreground hover:text-accent transition-colors"
+              className="text-xs text-muted-foreground hover:text-accent transition-colors font-medium"
             >
               Esqueceu a senha?
             </button>
           </div>
 
-          <p className="mt-4 text-center text-sm text-muted-foreground">
+          <p className="mt-4 text-center text-xs text-muted-foreground">
             {isLogin ? "Não tem conta? " : "Já tem conta? "}
             <button
               onClick={() => { setIsLogin(!isLogin); setError(""); }}
-              className="font-semibold text-accent hover:underline"
+              className="font-bold text-accent hover:underline"
             >
               {isLogin ? "Criar Conta" : "Entrar"}
             </button>

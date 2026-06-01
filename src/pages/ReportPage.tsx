@@ -204,33 +204,35 @@ const ReportPage = () => {
         <input ref={fileInputRef} type="file" accept="image/*" className="hidden" onChange={handleFileChange} />
 
         {/* Header */}
-        <div className="flex items-center px-5 py-4 bg-card border-b border-border">
-          <h1 className="font-heading text-lg font-bold text-foreground">Registrar Foco</h1>
+        <div className="flex items-center px-5 py-4 bg-card/85 backdrop-blur-md border-b border-border sticky top-0 z-10 w-full">
+          <div className="max-w-lg mx-auto w-full">
+            <h1 className="font-heading text-lg font-extrabold text-foreground">Registrar Novo Foco</h1>
+          </div>
         </div>
 
         {isOffline && (
           <motion.div
             initial={{ opacity: 0, height: 0 }}
             animate={{ opacity: 1, height: "auto" }}
-            className="mx-5 mt-4 flex items-center gap-2 rounded-lg bg-warning/15 border border-warning/30 px-4 py-3 text-sm text-warning-foreground"
+            className="mx-5 mt-4 flex items-center gap-2 rounded-lg bg-warning/15 border border-warning/30 px-4 py-3 text-sm text-warning-foreground max-w-lg md:mx-auto"
           >
             <WifiOff className="h-4 w-4 shrink-0" />
             <span>Você está offline. O registro será salvo no aparelho e enviado depois.</span>
           </motion.div>
         )}
 
-        <div className="flex-1 px-5 py-6 space-y-5 overflow-y-auto">
+        <div className="flex-1 px-5 py-6 space-y-5 overflow-y-auto max-w-lg mx-auto w-full">
           {/* GPS Status */}
-          <div className="flex items-center gap-3 rounded-xl bg-card p-4 border border-border" style={{ boxShadow: "var(--shadow-card)" }}>
-            <div className={`rounded-full p-2 ${gpsStatus === "done" ? "bg-primary/10" : gpsStatus === "error" ? "bg-destructive/10" : "bg-muted"}`}>
+          <div className="flex items-center gap-3 rounded-2xl bg-card p-4 border border-border" style={{ boxShadow: "var(--shadow-card)" }}>
+            <div className={`rounded-full p-2.5 ${gpsStatus === "done" ? "bg-primary/10" : gpsStatus === "error" ? "bg-destructive/10" : "bg-muted"}`}>
               <Navigation className={`h-5 w-5 ${gpsStatus === "done" ? "text-primary" : gpsStatus === "error" ? "text-destructive" : "text-muted-foreground"}`} />
             </div>
             <div className="flex-1 min-w-0">
-              <p className="text-sm font-semibold text-foreground">
+              <p className="text-sm font-bold text-foreground">
                 {gpsStatus === "loading" ? "Obtendo localização..." : gpsStatus === "error" ? "Erro no GPS" : "Localização obtida ✓"}
               </p>
               <p className="text-xs text-muted-foreground truncate">
-                {gpsStatus === "loading" ? "Aguarde o GPS" : coords ? `Lat: ${coords.lat.toFixed(4)}, Lng: ${coords.lng.toFixed(4)}` : "Usando localização padrão"}
+                {gpsStatus === "loading" ? "Aguarde o GPS" : coords ? `Lat: ${coords.lat.toFixed(5)}, Lng: ${coords.lng.toFixed(5)}` : "Usando localização padrão"}
               </p>
             </div>
             {gpsStatus === "loading" && <div className="ml-auto h-5 w-5 animate-spin rounded-full border-2 border-primary border-t-transparent" />}
@@ -238,8 +240,8 @@ const ReportPage = () => {
 
           {/* Address */}
           <div className="relative">
-            <label className="text-sm font-semibold text-foreground mb-2 block">
-              <MapPin className="h-4 w-4 inline mr-1" />
+            <label className="text-sm font-bold text-foreground mb-2 block">
+              <MapPin className="h-4 w-4 inline mr-1 text-primary" />
               Endereço do Foco
             </label>
             <Input
@@ -252,14 +254,14 @@ const ReportPage = () => {
               }}
               onFocus={() => suggestions.length > 0 && setShowSuggestions(true)}
               onBlur={() => setTimeout(() => setShowSuggestions(false), 200)}
-              className="bg-card"
+              className="bg-card border-border/70 focus-visible:ring-primary focus-visible:border-primary rounded-xl h-11"
               maxLength={200}
             />
-            <p className="text-xs text-muted-foreground mt-1">
+            <p className="text-xs text-muted-foreground mt-1.5 pl-1">
               Digite para buscar ou marque no mapa abaixo
             </p>
             {showSuggestions && suggestions.length > 0 && (
-              <div className="absolute z-50 top-[calc(100%-1.25rem)] left-0 right-0 bg-card border border-border rounded-lg shadow-lg overflow-hidden">
+              <div className="absolute z-50 top-[calc(100%-1.25rem)] left-0 right-0 bg-card border border-border rounded-xl shadow-xl overflow-hidden">
                 {suggestions.map((s, i) => (
                   <button
                     key={i}
@@ -280,7 +282,7 @@ const ReportPage = () => {
             type="button"
             variant="outline"
             onClick={() => setShowMapPicker(true)}
-            className="w-full border-primary/40 text-primary hover:bg-primary/10 font-semibold gap-2"
+            className="w-full border-primary/30 text-primary hover:bg-primary/5 font-bold h-11 rounded-xl gap-2 transition-all"
           >
             <MapPin className="h-4 w-4" />
             Marcar localização no mapa
@@ -293,40 +295,51 @@ const ReportPage = () => {
               animate={{ opacity: 1 }}
               className="fixed inset-0 z-50 bg-background/80 backdrop-blur-sm flex flex-col"
             >
-              <div className="flex items-center justify-between px-5 py-4 bg-card border-b border-border">
-                <h2 className="font-heading text-base font-bold text-foreground">Toque no mapa para marcar</h2>
-                <Button variant="ghost" size="icon" onClick={() => setShowMapPicker(false)}>
+              <div className="flex items-center justify-between px-5 py-4 bg-card border-b border-border sticky top-0 z-10">
+                <h2 className="font-heading text-base font-extrabold text-foreground">Toque no mapa para marcar</h2>
+                <Button variant="ghost" size="icon" onClick={() => setShowMapPicker(false)} className="hover:bg-muted rounded-full">
                   <X className="h-5 w-5" />
                 </Button>
               </div>
               <div ref={mapRef} className="flex-1" />
               {mapPickerCoords && (
-                <div className="px-5 py-2 bg-card border-t border-border text-xs text-muted-foreground text-center">
+                <div className="px-5 py-2.5 bg-card border-t border-border text-xs text-muted-foreground font-bold text-center">
                   Lat: {mapPickerCoords.lat.toFixed(6)}, Lng: {mapPickerCoords.lng.toFixed(6)}
                 </div>
               )}
-              <div className="px-5 py-4 bg-card border-t border-border">
-                <Button onClick={confirmMapPicker} className="w-full bg-primary text-primary-foreground hover:bg-primary/90 font-semibold" style={{ boxShadow: "var(--shadow-button)" }}>
-                  Confirmar localização
-                </Button>
+              <div className="px-5 py-4 bg-card border-t border-border flex justify-center sticky bottom-0 z-10">
+                <div className="max-w-lg w-full">
+                  <Button
+                    onClick={confirmMapPicker}
+                    className="w-full text-white font-bold h-11 rounded-xl transition-all duration-300 hover:opacity-95"
+                    style={{
+                      background: "var(--gradient-hero)",
+                      boxShadow: "0 8px 20px -4px hsl(152 55% 38% / 0.3)"
+                    }}
+                  >
+                    Confirmar localização
+                  </Button>
+                </div>
               </div>
             </motion.div>
           )}
 
           {/* Photo */}
           <div>
-            <label className="text-sm font-semibold text-foreground mb-2 block">Foto do Foco</label>
+            <label className="text-sm font-bold text-foreground mb-2 block">Foto do Foco</label>
             <motion.button
-              whileTap={{ scale: 0.97 }}
+              whileHover={{ scale: 1.01 }}
+              whileTap={{ scale: 0.98 }}
               onClick={handleImagePick}
-              className="w-full rounded-xl border-2 border-dashed border-border bg-card p-8 flex flex-col items-center gap-2 hover:border-primary/40 transition-colors"
+              className="w-full rounded-2xl border-2 border-dashed border-border bg-card p-8 flex flex-col items-center gap-2 hover:border-primary/40 transition-all duration-300"
+              style={{ boxShadow: "var(--shadow-card)" }}
             >
               {imagePreview ? (
                 <img src={imagePreview} alt="Preview" className="rounded-lg max-h-40 object-cover" />
               ) : (
                 <>
                   <Camera className="h-8 w-8 text-muted-foreground" />
-                  <span className="text-sm text-muted-foreground">Tirar Foto ou Anexar Imagem</span>
+                  <span className="text-sm text-muted-foreground font-medium">Tirar Foto ou Anexar Imagem</span>
                 </>
               )}
             </motion.button>
@@ -334,12 +347,12 @@ const ReportPage = () => {
 
           {/* Description */}
           <div>
-            <label className="text-sm font-semibold text-foreground mb-2 block">Descrição (opcional)</label>
+            <label className="text-sm font-bold text-foreground mb-2 block">Descrição (opcional)</label>
             <Textarea
               placeholder="Breve descrição do local..."
               value={description}
               onChange={(e) => setDescription(e.target.value)}
-              className="bg-card resize-none"
+              className="bg-card border-border/70 focus-visible:ring-primary focus-visible:border-primary rounded-xl resize-none"
               rows={3}
               maxLength={500}
             />
@@ -347,15 +360,29 @@ const ReportPage = () => {
         </div>
 
         {/* Footer */}
-        <div className="flex gap-3 px-5 py-4 bg-card border-t border-border">
-          <Button variant="outline" onClick={() => navigate(-1)} className="flex-1 border-destructive text-destructive hover:bg-destructive/10 font-semibold">
-            <ArrowLeft className="h-4 w-4 mr-1" />
-            Voltar
-          </Button>
-          <Button onClick={handleSubmit} disabled={gpsStatus === "loading"} className="flex-1 bg-primary text-primary-foreground hover:bg-primary/90 font-semibold" style={{ boxShadow: "var(--shadow-button)" }}>
-            <Send className="h-4 w-4 mr-1" />
-            Confirmar Envio
-          </Button>
+        <div className="flex gap-3 px-5 py-4 bg-card border-t border-border sticky bottom-0 z-10 w-full">
+          <div className="max-w-lg mx-auto w-full flex gap-3">
+            <Button
+              variant="outline"
+              onClick={() => navigate(-1)}
+              className="flex-1 border-destructive/30 text-destructive hover:bg-destructive/5 font-bold h-11 rounded-xl"
+            >
+              <ArrowLeft className="h-4 w-4 mr-1.5" />
+              Voltar
+            </Button>
+            <Button
+              onClick={handleSubmit}
+              disabled={gpsStatus === "loading"}
+              className="flex-1 text-white font-bold h-11 rounded-xl hover:opacity-95 transition-all duration-300"
+              style={{
+                background: "var(--gradient-hero)",
+                boxShadow: "0 8px 20px -4px hsl(152 55% 38% / 0.3)"
+              }}
+            >
+              <Send className="h-4 w-4 mr-1.5" />
+              Enviar
+            </Button>
+          </div>
         </div>
       </div>
     </PageTransition>

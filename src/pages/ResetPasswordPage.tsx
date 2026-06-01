@@ -6,7 +6,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import PageTransition from "@/components/PageTransition";
 import { updatePassword } from "@/lib/store";
-import { supabase } from "@/integrations/supabase/client";
+
 import logo from "@/assets/logo.png";
 
 const ResetPasswordPage = () => {
@@ -30,20 +30,16 @@ const ResetPasswordPage = () => {
       return;
     }
 
-    // Process the recovery hash so Supabase recognizes the session
-    supabase.auth.getSession().then(({ data }) => {
-      if (data.session) {
-        setValidating(false);
-      } else {
-        // Try to exchange the code from the URL for a session
-        supabase.auth.exchangeCodeForSession(hash).then(({ error }) => {
-          if (error) {
-            setError("Link inválido ou expirado. Solicite uma nova recuperação de senha.");
-          }
-          setValidating(false);
-        });
-      }
-    });
+    // Extrair access_token do hash (ex: #type=recovery&access_token=...)
+    const params = new URLSearchParams(hash.replace("#", "?"));
+    const token = params.get("access_token");
+    if (token) {
+      localStorage.setItem("zika_token", token);
+      setValidating(false);
+    } else {
+      setError("Link de recuperação inválido (token ausente).");
+      setValidating(false);
+    }
   }, []);
 
   const handleSubmit = async (e: React.FormEvent) => {

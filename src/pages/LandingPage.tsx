@@ -13,19 +13,24 @@ const LandingPage = () => {
   return (
     <PageTransition>
       <div className="min-h-screen bg-background flex flex-col items-center justify-center px-6 py-12 overflow-hidden relative">
-        {/* Subtle background gradient */}
-        <div className="absolute inset-0 opacity-30" style={{ background: "var(--gradient-hero)" }} />
-        <div className="absolute inset-0 bg-background/80" />
+        {/* Modern Dot Grid & Glows */}
+        <div className="absolute inset-0" style={{
+          backgroundImage: "radial-gradient(hsl(var(--muted-foreground) / 0.15) 1px, transparent 1px)",
+          backgroundSize: "24px 24px"
+        }} />
+        <div className="absolute top-1/4 left-1/2 -translate-x-1/2 w-[500px] h-[500px] rounded-full bg-primary/10 blur-[120px] pointer-events-none" />
+        <div className="absolute inset-0 bg-gradient-to-b from-background/0 via-background/40 to-background" />
 
         <div className="relative z-10 w-full max-w-lg flex flex-col items-center">
           {/* Logo */}
           <motion.img
             src={logo}
             alt="ZIKA-MAPS"
-            className="w-72 h-72 mb-6 object-contain"
-            initial={{ scale: 0, opacity: 0 }}
+            className="w-56 h-56 mb-4 object-contain drop-shadow-lg"
+            initial={{ scale: 0.85, opacity: 0 }}
             animate={{ scale: 1, opacity: 1 }}
             transition={{ duration: 0.7, ease: "easeOut" }}
+            whileHover={{ scale: 1.03 }}
           />
 
           {/* Title */}
@@ -93,17 +98,18 @@ const LandingPage = () => {
                   ].map((item, i) => (
                     <motion.div
                       key={item.title}
-                      initial={{ opacity: 0, x: -20 }}
-                      animate={{ opacity: 1, x: 0 }}
-                      transition={{ delay: i * 0.15, duration: 0.4 }}
-                      className="flex items-start gap-3 rounded-xl bg-card border border-border p-4"
+                      initial={{ opacity: 0, y: 15 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      whileHover={{ y: -3, scale: 1.01 }}
+                      transition={{ delay: i * 0.1, duration: 0.4 }}
+                      className="flex items-start gap-4 rounded-2xl bg-white/70 backdrop-blur-md border border-white/80 p-4 transition-all duration-300"
                       style={{ boxShadow: "var(--shadow-card)" }}
                     >
-                      <div className="flex-shrink-0 w-9 h-9 rounded-lg bg-primary/10 flex items-center justify-center">
-                        <item.icon className="h-5 w-5 text-primary" />
+                      <div className="flex-shrink-0 w-10 h-10 rounded-xl bg-primary/10 flex items-center justify-center border border-primary/20 text-primary">
+                        <item.icon className="h-5 w-5" />
                       </div>
                       <div>
-                        <h3 className="text-sm font-bold text-foreground">{item.title}</h3>
+                        <h3 className="text-sm font-extrabold text-foreground leading-snug">{item.title}</h3>
                         <p className="text-xs text-muted-foreground mt-0.5">{item.desc}</p>
                       </div>
                     </motion.div>
@@ -131,11 +137,14 @@ const LandingPage = () => {
           >
             <Button
               onClick={() => navigate("/login")}
-              className="w-full bg-primary text-primary-foreground hover:bg-primary/90 font-semibold text-base py-5 gap-2"
-              style={{ boxShadow: "var(--shadow-button)" }}
+              className="w-full text-white font-bold text-sm h-12 rounded-xl transition-all duration-300 hover:opacity-95 hover:scale-[1.01] gap-2"
+              style={{
+                background: "var(--gradient-hero)",
+                boxShadow: "0 10px 25px -5px hsl(152 55% 38% / 0.4)"
+              }}
             >
               Começar agora
-              <ArrowRight className="h-5 w-5" />
+              <ArrowRight className="h-4 w-4" />
             </Button>
           </motion.div>
         </div>

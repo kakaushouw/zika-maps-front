@@ -3,7 +3,7 @@ import { motion } from "framer-motion";
 import { ArrowLeft } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import PageTransition from "@/components/PageTransition";
-import { useReports } from "@/lib/store";
+import { useReports, useIsAgent } from "@/lib/store";
 import { useEffect, useRef } from "react";
 import L from "leaflet";
 import "leaflet/dist/leaflet.css";
@@ -12,6 +12,7 @@ import "leaflet.heat";
 const MapPage = () => {
   const navigate = useNavigate();
   const reports = useReports();
+  const isAgent = useIsAgent();
   const mapRef = useRef<HTMLDivElement>(null);
   const mapInstanceRef = useRef<L.Map | null>(null);
 
@@ -100,14 +101,14 @@ const MapPage = () => {
       L.marker([report.lat, report.lng], { icon })
         .addTo(map)
         .bindPopup(
-          `<div style="font-size:13px">
-            <strong>${report.description}</strong>
-            ${report.address ? `<br/><span style="color:#666;font-size:12px">📍 ${report.address}</span>` : ""}
-            <br/><span style="color:${color};font-weight:600;text-transform:capitalize">${report.status}</span>
+          `<div style="font-size:13px; font-family: sans-serif; padding: 2px;">
+            <strong style="display:block; margin-bottom:4px; color:#1e293b;">${report.description}</strong>
+            ${isAgent && report.address ? `<span style="color:#64748b;font-size:12px;display:block;margin-bottom:6px;">📍 ${report.address}</span>` : ""}
+            <span style="display:inline-block; padding: 2px 6px; background:${color}20; color:${color}; font-size:11px; font-weight:700; border-radius:4px; text-transform:capitalize;">${report.status}</span>
           </div>`
         );
     });
-  }, [reports]);
+  }, [reports, isAgent]);
 
   return (
     <PageTransition>
@@ -115,7 +116,7 @@ const MapPage = () => {
         <div ref={mapRef} className="h-screen w-full" />
 
         {/* Map Label */}
-        <div className="absolute bottom-20 left-1/2 -translate-x-1/2 bg-card/80 backdrop-blur-sm rounded-lg px-4 py-2 text-xs text-muted-foreground border border-border z-[1000]">
+        <div className="absolute bottom-20 left-1/2 -translate-x-1/2 bg-card/90 backdrop-blur-md rounded-2xl px-5 py-2.5 text-xs text-foreground font-bold border border-border z-[1000] shadow-lg">
           Manaus • {reports.length} focos registrados
         </div>
 
@@ -127,9 +128,13 @@ const MapPage = () => {
         >
           <Button
             onClick={() => navigate(-1)}
-            className="bg-destructive text-destructive-foreground hover:bg-destructive/90 font-semibold shadow-lg px-8"
+            className="text-white font-bold shadow-xl px-8 py-5 rounded-xl hover:opacity-95 hover:scale-[1.02] transition-all"
+            style={{
+              background: "var(--gradient-hero)",
+              boxShadow: "0 8px 24px -4px hsl(152 55% 38% / 0.4)"
+            }}
           >
-            <ArrowLeft className="h-4 w-4 mr-1" />
+            <ArrowLeft className="h-4 w-4 mr-1.5" />
             Voltar
           </Button>
         </motion.div>
