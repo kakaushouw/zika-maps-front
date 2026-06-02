@@ -62,7 +62,7 @@ O sistema público de notificação (SINAN) é passivo e depende exclusivamente 
 
 ### 🎥 Vídeo Demonstrativo
 
-> **[VÍDEO DEMONSTRATIVO]** — *(link será adicionado aqui)*
+> **[VÍDEO DEMONSTRATIVO]** — *(https://youtu.be/tLx0F75abqw)*
 
 ---
 
@@ -256,7 +256,7 @@ Este projeto está licenciado sob a licença **MIT**. Veja o arquivo [LICENSE](L
 | Kaell Soares Calacina | Desenvolvedor & Documentador | [@kakaushouw](https://github.com/kakaushouw) | — | kaelcina@gmail.com |
 | Ana Lívia da Costa Silva | Documentadora e analista | [@liviacosttaa](https://github.com/liviacosttaa) | [LinkedIn](https://www.linkedin.com/in/liviacossttaa?utm_source=share&utm_campaign=share_via&utm_content=profile&utm_medium=ios_app) | analiviasas@gmail.com |
 | Vitória Santos de Azevedo | Testadora & Documentadora | [@csvick](https://github.com/csvick) | — | vitoriaazevedo.r91@gmail.com |
-| Luiz Henrique Moutinho Laranjeira | Documentador e analista | [@luizhmoutinho](https://github.com/luizhmoutinho) | — | luizhmoutinho@gmail.com |
+| Luiz Henrique Moutinho Laranjeira | Documentador e analista | [@luizhmoutinho](https://github.com/luizhmoutinho) | [LinkedIn](https://www.linkedin.com/in/luizhmoutinho?utm_source=share&utm_campaign=share_via&utm_content=profile&utm_medium=android_app) | luizhmoutinho@gmail.com |
 | João Etto de Souza Gomes | Designer & Documentador | [@JoaoEtto](https://github.com/JoaoEtto) | [LinkedIn](https://www.linkedin.com/in/joão-etto-7b6775323) | joaoettogomes@gmail.com |
 
 **Orientadora:** Luana Magalhães Leal — prof.luanalealm@gmail.com
