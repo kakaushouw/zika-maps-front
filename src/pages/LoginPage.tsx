@@ -6,7 +6,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import PageTransition from "@/components/PageTransition";
 import { signIn, signUp, getUserRole } from "@/lib/store";
-import logo from "@/assets/logo.png";
+import { BrandLogo } from "@/components/BrandLogo";
 
 const LoginPage = () => {
   const navigate = useNavigate();
@@ -63,13 +63,12 @@ const LoginPage = () => {
           className="w-full max-w-sm bg-white/80 backdrop-blur-xl rounded-3xl border border-white/60 p-8 shadow-2xl relative z-10"
         >
           <div className="mb-6 flex flex-col items-center">
-            <motion.img
-              src={logo}
-              alt="ZIKA-MAPS"
-              className="w-40 h-40 object-contain drop-shadow-md"
+            <motion.div
               whileHover={{ scale: 1.05, rotate: 2 }}
               transition={{ type: "spring", stiffness: 300 }}
-            />
+            >
+              <BrandLogo size="lg" className="w-40 h-40 drop-shadow-md" />
+            </motion.div>
           </div>
 
           {error && (

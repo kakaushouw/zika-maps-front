@@ -3,7 +3,7 @@ import { motion } from "framer-motion";
 import { ArrowLeft } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import PageTransition from "@/components/PageTransition";
-import { useReports, useIsAgent } from "@/lib/store";
+import { useReports, useIsAgent, startReportsSync } from "@/lib/store";
 import { useEffect, useRef } from "react";
 import L from "leaflet";
 import "leaflet/dist/leaflet.css";
@@ -15,6 +15,11 @@ const MapPage = () => {
   const isAgent = useIsAgent();
   const mapRef = useRef<HTMLDivElement>(null);
   const mapInstanceRef = useRef<L.Map | null>(null);
+
+  useEffect(() => {
+    const cleanup = startReportsSync();
+    return cleanup;
+  }, []);
 
   useEffect(() => {
     if (!mapRef.current || mapInstanceRef.current) return;

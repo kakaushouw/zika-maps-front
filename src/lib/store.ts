@@ -1,43 +1,80 @@
 import { useState, useEffect, useSyncExternalStore } from "react";
+import {
+  WS_URL,
+  apiFetch,
+  getAuthHeaders,
+  normalizeReport,
+  normalizeReports,
+  parseApiError,
+  resolveReportImageUrl,
+  type AuthUser,
+} from "./api";
+import type { Report, ReportStatus } from "./types";
 
-export type ReportStatus = "pending" | "confirmed" | "resolved" | "discarded";
-
-export interface Report {
-  id: string;
-  user_id: string;
-  description: string;
-  address?: string;
-  status: ReportStatus;
-  date: string;
-  lat: number;
-  lng: number;
-  image_url?: string;
-  created_at: string;
-}
-
-const API_URL = import.meta.env.VITE_API_URL || "http://localhost:5000";
+export type { Report, ReportStatus } from "./types";
+export { API_URL, WS_URL, resolveReportImageUrl } from "./api";
 
 // Estado global reativo de autenticação
-let authUser: any = null;
+let authUser: AuthUser | null = null;
 try {
   const storedUser = localStorage.getItem("zika_user");
-  if (storedUser) authUser = JSON.parse(storedUser);
-} catch { /* silent */ }
+  if (storedUser) authUser = JSON.parse(storedUser) as AuthUser;
+} catch {
+  /* silent */
+}
 
-let authListeners: ((u: any) => void)[] = [];
-function notifyAuth(u: any) {
+let authListeners: ((u: AuthUser | null) => void)[] = [];
+function notifyAuth(u: AuthUser | null) {
   authUser = u;
   authListeners.forEach((l) => l(u));
 }
 
+let sessionInitialized = false;
+
+/** Valida o JWT com GET /api/auth/me e atualiza o usuário em cache */
+export async function refreshSession(): Promise<AuthUser | null> {
+  const token = localStorage.getItem("zika_token");
+  if (!token) {
+    notifyAuth(null);
+    return null;
+  }
+
+  const res = await apiFetch("/api/auth/me", {
+    headers: getAuthHeaders(false),
+  });
+
+  if (!res.ok) {
+    if (res.status === 401) {
+      await signOut();
+    }
+    return null;
+  }
+
+  const user = (await res.json()) as AuthUser;
+  localStorage.setItem("zika_user", JSON.stringify(user));
+  notifyAuth(user);
+  return user;
+}
+
 // Hook de Autenticação
 export function useAuth() {
-  const [user, setUser] = useState<any>(authUser);
-  const [loading, setLoading] = useState(false);
+  const [user, setUser] = useState<AuthUser | null>(authUser);
+  const [loading, setLoading] = useState(
+    () => !!localStorage.getItem("zika_token") && !sessionInitialized
+  );
 
   useEffect(() => {
-    const listener = (u: any) => setUser(u);
+    const listener = (u: AuthUser | null) => setUser(u);
     authListeners.push(listener);
+
+    if (!sessionInitialized && localStorage.getItem("zika_token")) {
+      sessionInitialized = true;
+      refreshSession().finally(() => setLoading(false));
+    } else {
+      sessionInitialized = true;
+      setLoading(false);
+    }
+
     return () => {
       authListeners = authListeners.filter((l) => l !== listener);
     };
@@ -50,7 +87,6 @@ export function useAuth() {
 export function useIsAgent(): boolean {
   const { user } = useAuth();
   if (!user) return false;
-  // Suporta os formatos: { role: "agent" } ou { roles: ["agent"] }
   if (user.role === "agent") return true;
   if (Array.isArray(user.roles) && user.roles.includes("agent")) return true;
   return false;
@@ -62,17 +98,14 @@ export async function getUserRole(): Promise<"citizen" | "agent" | null> {
   if (!token) return null;
 
   try {
-    const res = await fetch(`${API_URL}/api/auth/role`, {
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
+    const res = await apiFetch("/api/auth/role", {
+      headers: getAuthHeaders(false),
     });
     if (!res.ok) return null;
     const data = await res.json();
     return data.role as "citizen" | "agent";
   } catch {
-    // Fallback para o role salvo localmente se der erro na rede
-    if (authUser && authUser.roles && authUser.roles.length > 0) {
+    if (authUser?.roles?.length) {
       return authUser.roles[0] as "citizen" | "agent";
     }
     return "citizen";
@@ -80,47 +113,42 @@ export async function getUserRole(): Promise<"citizen" | "agent" | null> {
 }
 
 // Cadastrar usuário
-export async function signUp(email: string, password: string, role: "citizen" | "agent" = "citizen") {
-  const res = await fetch(`${API_URL}/api/auth/signup`, {
+export async function signUp(
+  email: string,
+  password: string,
+  role: "citizen" | "agent" = "citizen"
+) {
+  const res = await apiFetch("/api/auth/signup", {
     method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-    },
+    headers: getAuthHeaders(),
     body: JSON.stringify({ email, password, role }),
   });
 
   if (!res.ok) {
-    const errorData = await res.json();
-    throw new Error(errorData.detail || "Erro ao realizar cadastro");
+    throw new Error(await parseApiError(res));
   }
 
-  const data = await res.json();
-  
-  // Realizar o login automatico logo apos cadastrar
   return await signIn(email, password);
 }
 
 // Fazer login
 export async function signIn(email: string, password: string) {
-  const res = await fetch(`${API_URL}/api/auth/signin`, {
+  const res = await apiFetch("/api/auth/signin", {
     method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-    },
+    headers: getAuthHeaders(),
     body: JSON.stringify({ email, password }),
   });
 
   if (!res.ok) {
-    const errorData = await res.json();
-    throw new Error(errorData.detail || "Erro ao realizar login");
+    throw new Error(await parseApiError(res));
   }
 
   const data = await res.json();
-  
+
   localStorage.setItem("zika_token", data.access_token);
   localStorage.setItem("zika_user", JSON.stringify(data.user));
-  
-  notifyAuth(data.user);
+
+  notifyAuth(data.user as AuthUser);
   return data;
 }
 
@@ -131,19 +159,16 @@ export async function signOut() {
   notifyAuth(null);
 }
 
-// Esqueceu senha (Mock para desenvolvimento local, envia email na prod se configurado)
+// Esqueceu senha
 export async function resetPassword(email: string) {
-  const res = await fetch(`${API_URL}/api/auth/reset-password`, {
+  const res = await apiFetch("/api/auth/reset-password", {
     method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-    },
+    headers: getAuthHeaders(),
     body: JSON.stringify({ email }),
   });
 
   if (!res.ok) {
-    const errorData = await res.json();
-    throw new Error(errorData.detail || "Erro ao solicitar redefinição de senha");
+    throw new Error(await parseApiError(res));
   }
 }
 
@@ -152,18 +177,14 @@ export async function updatePassword(password: string) {
   const token = localStorage.getItem("zika_token");
   if (!token) throw new Error("Usuário não autenticado");
 
-  const res = await fetch(`${API_URL}/api/auth/update-password`, {
+  const res = await apiFetch("/api/auth/update-password", {
     method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-      Authorization: `Bearer ${token}`,
-    },
+    headers: getAuthHeaders(),
     body: JSON.stringify({ password }),
   });
 
   if (!res.ok) {
-    const errorData = await res.json();
-    throw new Error(errorData.detail || "Erro ao atualizar senha");
+    throw new Error(await parseApiError(res));
   }
 }
 
@@ -172,42 +193,47 @@ export async function getReports(): Promise<Report[]> {
   const token = localStorage.getItem("zika_token");
   if (!token) throw new Error("Usuário não autenticado");
 
-  const res = await fetch(`${API_URL}/api/reports`, {
-    headers: {
-      Authorization: `Bearer ${token}`,
-    },
+  const res = await apiFetch("/api/reports", {
+    headers: getAuthHeaders(false),
   });
 
   if (!res.ok) {
-    const errorData = await res.json();
-    throw new Error(errorData.detail || "Erro ao carregar denúncias");
+    throw new Error(await parseApiError(res));
   }
 
   const data = await res.json();
-  return data as Report[];
+  return normalizeReports(data);
 }
 
 // Cadastrar denúncia
-export async function addReport(report: Omit<Report, "id" | "user_id" | "status" | "date" | "created_at">): Promise<Report> {
+export async function addReport(
+  report: Omit<Report, "id" | "user_id" | "status" | "date" | "created_at">
+): Promise<Report> {
   const token = localStorage.getItem("zika_token");
   if (!token) throw new Error("Usuário não autenticado");
 
-  const res = await fetch(`${API_URL}/api/reports`, {
+  const payload = {
+    description: report.description,
+    address: report.address,
+    lat: Number(report.lat),
+    lng: Number(report.lng),
+    image_url: report.image_url
+      ? resolveReportImageUrl(report.image_url)
+      : undefined,
+  };
+
+  const res = await apiFetch("/api/reports", {
     method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-      Authorization: `Bearer ${token}`,
-    },
-    body: JSON.stringify(report),
+    headers: getAuthHeaders(),
+    body: JSON.stringify(payload),
   });
 
   if (!res.ok) {
-    const errorData = await res.json();
-    throw new Error(errorData.detail || "Erro ao enviar denúncia");
+    throw new Error(await parseApiError(res));
   }
 
   const data = await res.json();
-  return data as Report;
+  return normalizeReport(data as Record<string, unknown>);
 }
 
 // Atualizar status da denúncia
@@ -215,19 +241,20 @@ export async function updateReportStatus(id: string, status: ReportStatus): Prom
   const token = localStorage.getItem("zika_token");
   if (!token) throw new Error("Usuário não autenticado");
 
-  const res = await fetch(`${API_URL}/api/reports/${id}/status`, {
+  const res = await apiFetch(`/api/reports/${id}/status`, {
     method: "PATCH",
-    headers: {
-      "Content-Type": "application/json",
-      Authorization: `Bearer ${token}`,
-    },
+    headers: getAuthHeaders(),
     body: JSON.stringify({ status }),
   });
 
   if (!res.ok) {
-    const errorData = await res.json();
-    throw new Error(errorData.detail || "Erro ao atualizar status da denúncia");
+    throw new Error(await parseApiError(res));
   }
+
+  const data = await res.json();
+  const updated = normalizeReport(data as Record<string, unknown>);
+  reportsCache = reportsCache.map((r) => (r.id === updated.id ? updated : r));
+  notify();
 }
 
 // Upload de imagem da denúncia
@@ -238,21 +265,22 @@ export async function uploadReportImage(file: File): Promise<string> {
   const formData = new FormData();
   formData.append("file", file);
 
-  const res = await fetch(`${API_URL}/api/reports/upload`, {
+  const res = await apiFetch("/api/reports/upload", {
     method: "POST",
-    headers: {
-      Authorization: `Bearer ${token}`,
-    },
+    headers: getAuthHeaders(false),
     body: formData,
   });
 
   if (!res.ok) {
-    const errorData = await res.json();
-    throw new Error(errorData.detail || "Erro ao fazer upload da imagem");
+    throw new Error(await parseApiError(res));
   }
 
   const data = await res.json();
-  return data.url;
+  const url = resolveReportImageUrl(data.url);
+  if (!url) {
+    throw new Error("Resposta de upload inválida: URL da imagem ausente.");
+  }
+  return url;
 }
 
 // Cache e sub/pub para Denúncias (Realtime)
@@ -278,46 +306,55 @@ export function useReports(): Report[] {
   return useSyncExternalStore(subscribe, getSnapshot, getSnapshot);
 }
 
-// Sincronização em tempo real via WebSocket nativo do FastAPI
+// Sincronização em tempo real via WebSocket (FastAPI)
 let syncActive = false;
 let wsInstance: WebSocket | null = null;
 
+function applyWsPayload(payload: {
+  eventType: string;
+  new?: Record<string, unknown>;
+  old?: Record<string, unknown>;
+}) {
+  if (payload.eventType === "INSERT" && payload.new) {
+    const report = normalizeReport(payload.new);
+    if (!reportsCache.some((r) => r.id === report.id)) {
+      reportsCache = [report, ...reportsCache];
+    }
+  } else if (payload.eventType === "UPDATE" && payload.new) {
+    const report = normalizeReport(payload.new);
+    reportsCache = reportsCache.map((r) => (r.id === report.id ? report : r));
+  } else if (payload.eventType === "DELETE" && payload.old) {
+    const id = String((payload.old as { id?: string }).id);
+    reportsCache = reportsCache.filter((r) => r.id !== id);
+  }
+  notify();
+}
+
 export function startReportsSync() {
-  // Se já há uma sincronização ativa, não inicia outra
   if (syncActive) {
-    return () => {}; // cleanup vazio, quem iniciou é responsável por parar
+    return () => {};
   }
   syncActive = true;
 
-  // Carregamento inicial
-  getReports().then((data) => {
-    reportsCache = data;
-    notify();
-  }).catch((err) => {
-    console.error("Erro inicial ao carregar denúncias:", err);
-  });
-
-  const wsUrl = import.meta.env.VITE_WS_URL || "ws://localhost:5000/ws";
+  getReports()
+    .then((data) => {
+      reportsCache = data;
+      notify();
+    })
+    .catch((err) => {
+      console.error("Erro inicial ao carregar denúncias:", err);
+    });
 
   const connectWs = () => {
     if (!syncActive) return;
 
-    const ws = new WebSocket(wsUrl);
+    const ws = new WebSocket(WS_URL);
     wsInstance = ws;
 
     ws.onmessage = (event) => {
       try {
         const payload = JSON.parse(event.data);
-        if (payload.eventType === "INSERT") {
-          reportsCache = [payload.new as Report, ...reportsCache];
-        } else if (payload.eventType === "UPDATE") {
-          reportsCache = reportsCache.map((r) =>
-            r.id === (payload.new as Report).id ? (payload.new as Report) : r
-          );
-        } else if (payload.eventType === "DELETE") {
-          reportsCache = reportsCache.filter((r) => r.id !== (payload.old as Report).id);
-        }
-        notify();
+        applyWsPayload(payload);
       } catch (e) {
         console.error("Erro ao processar mensagem do WebSocket:", e);
       }
@@ -337,7 +374,6 @@ export function startReportsSync() {
 
   connectWs();
 
-  // Retorna cleanup para o componente que iniciou a sync
   return () => {
     syncActive = false;
     if (wsInstance) {

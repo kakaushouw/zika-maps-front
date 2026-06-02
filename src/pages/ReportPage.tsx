@@ -6,6 +6,7 @@ import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 import { Input } from "@/components/ui/input";
 import PageTransition from "@/components/PageTransition";
+import { BrandLogo } from "@/components/BrandLogo";
 import { addReport, uploadReportImage, useAuth } from "@/lib/store";
 import L from "leaflet";
 import "leaflet/dist/leaflet.css";
@@ -23,6 +24,8 @@ const ReportPage = () => {
   const [suggestions, setSuggestions] = useState<Array<{ display_name: string; lat: string; lon: string }>>([]);
   const [showSuggestions, setShowSuggestions] = useState(false);
   const [showMapPicker, setShowMapPicker] = useState(false);
+  const [submitError, setSubmitError] = useState("");
+  const [submitting, setSubmitting] = useState(false);
   const [mapPickerCoords, setMapPickerCoords] = useState<{ lat: number; lng: number } | null>(null);
   const searchTimeout = useRef<ReturnType<typeof setTimeout> | null>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
@@ -176,26 +179,39 @@ const ReportPage = () => {
   };
 
   const handleSubmit = async () => {
+    setSubmitError("");
+    setSubmitting(true);
+
     let image_url: string | undefined;
-    
+
     if (fileInputRef.current?.files?.[0]) {
       try {
         image_url = await uploadReportImage(fileInputRef.current.files[0]);
-      } catch {
-        // Continue without image
+      } catch (err) {
+        const message =
+          err instanceof Error ? err.message : "Não foi possível enviar a imagem.";
+        setSubmitError(message);
+        setSubmitting(false);
+        return;
       }
-    } else if (imagePreview) {
-      image_url = imagePreview;
     }
 
-    await addReport({
-      description: description || "Foco registrado via app",
-      address: address || undefined,
-      lat: coords?.lat ?? -3.119,
-      lng: coords?.lng ?? -60.0217,
-      image_url,
-    });
-    navigate("/tracking");
+    try {
+      await addReport({
+        description: description || "Foco registrado via app",
+        address: address || undefined,
+        lat: coords?.lat ?? -3.119,
+        lng: coords?.lng ?? -60.0217,
+        image_url,
+      });
+      navigate("/tracking");
+    } catch (err) {
+      setSubmitError(
+        err instanceof Error ? err.message : "Não foi possível enviar a denúncia."
+      );
+    } finally {
+      setSubmitting(false);
+    }
   };
 
   return (
@@ -206,9 +222,18 @@ const ReportPage = () => {
         {/* Header */}
         <div className="flex items-center px-5 py-4 bg-card/85 backdrop-blur-md border-b border-border sticky top-0 z-10 w-full">
           <div className="max-w-lg mx-auto w-full">
-            <h1 className="font-heading text-lg font-extrabold text-foreground">Registrar Novo Foco</h1>
+            <div className="flex items-center gap-3">
+              <BrandLogo size="xs" />
+              <h1 className="font-heading text-lg font-extrabold text-foreground">Registrar Novo Foco</h1>
+            </div>
           </div>
         </div>
+
+        {submitError && (
+          <div className="mx-5 mt-4 rounded-lg bg-destructive/10 border border-destructive/30 px-4 py-3 text-sm text-destructive max-w-lg md:mx-auto">
+            {submitError}
+          </div>
+        )}
 
         {isOffline && (
           <motion.div
@@ -372,7 +397,7 @@ const ReportPage = () => {
             </Button>
             <Button
               onClick={handleSubmit}
-              disabled={gpsStatus === "loading"}
+              disabled={gpsStatus === "loading" || submitting}
               className="flex-1 text-white font-bold h-11 rounded-xl hover:opacity-95 transition-all duration-300"
               style={{
                 background: "var(--gradient-hero)",

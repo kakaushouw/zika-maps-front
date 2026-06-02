@@ -4,6 +4,7 @@ import { motion } from "framer-motion";
 import { MapPin, List, LogOut, Plus } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import PageTransition from "@/components/PageTransition";
+import { BrandLogo } from "@/components/BrandLogo";
 import { useReports, signOut, startReportsSync, useAuth } from "@/lib/store";
 
 const CitizenDashboard = () => {
@@ -29,7 +30,7 @@ const CitizenDashboard = () => {
       <div className="min-h-screen bg-background">
         {/* Header */}
         <div className="flex items-center justify-between px-5 py-4 bg-card border-b border-border">
-          <h1 className="font-heading text-lg font-bold text-foreground">ZIKA-MAPS</h1>
+          <BrandLogo size="sm" />
           <Button
             variant="ghost"
             size="sm"

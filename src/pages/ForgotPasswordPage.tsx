@@ -6,7 +6,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import PageTransition from "@/components/PageTransition";
 import { resetPassword } from "@/lib/store";
-import logo from "@/assets/logo.png";
+import { BrandLogo } from "@/components/BrandLogo";
 
 const ForgotPasswordPage = () => {
   const navigate = useNavigate();
@@ -47,7 +47,7 @@ const ForgotPasswordPage = () => {
           className="w-full max-w-sm"
         >
           <div className="mb-8 flex flex-col items-center">
-            <img src={logo} alt="ZIKA-MAPS" className="w-48 h-48 object-contain" />
+            <BrandLogo size="lg" />
           </div>
 
           <button

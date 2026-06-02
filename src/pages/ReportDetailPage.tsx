@@ -3,6 +3,7 @@ import { useNavigate, useParams } from "react-router-dom";
 import { ArrowLeft, Calendar, MapPin, Image as ImageIcon, Activity } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import PageTransition from "@/components/PageTransition";
+import { BrandLogo } from "@/components/BrandLogo";
 import StatusBadge from "@/components/StatusBadge";
 import { useReports, useIsAgent } from "@/lib/store";
 
@@ -104,7 +105,8 @@ const ReportDetailPage = () => {
             >
               <ArrowLeft className="h-5 w-5" />
             </Button>
-            <h1 className="font-heading text-lg font-extrabold text-foreground">Detalhes da Denúncia</h1>
+            <BrandLogo size="xs" />
+            <h1 className="font-heading text-lg font-extrabold text-foreground flex-1">Detalhes da Denúncia</h1>
           </div>
         </div>
 
