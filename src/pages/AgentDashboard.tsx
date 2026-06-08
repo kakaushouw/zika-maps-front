@@ -7,6 +7,7 @@ import {
   AlertTriangle, ShieldCheck, CheckCircle2, Trash2, Map, ShieldAlert
 } from "lucide-react";
 import PageTransition from "@/components/PageTransition";
+import { BrandLogo } from "@/components/BrandLogo";
 import StatusBadge from "@/components/StatusBadge";
 import { useReports, updateReportStatus, startReportsSync, signOut, useAuth, Report, ReportStatus } from "@/lib/store";
 
@@ -221,13 +222,7 @@ const AgentDashboard = () => {
         >
           <div className="flex items-center justify-between max-w-2xl mx-auto">
             <div className="flex items-center gap-3">
-              {/* Institutional Avatar */}
-              <div
-                className="w-10 h-10 rounded-2xl flex items-center justify-center text-white shadow-sm"
-                style={{ background: "linear-gradient(135deg, #10b981, #3b82f6)" }}
-              >
-                <Shield className="h-5 w-5 stroke-[2.2]" />
-              </div>
+              <BrandLogo size="xs" className="rounded-lg bg-white/80 p-0.5" />
               <div>
                 <h1 className="font-heading text-base font-extrabold text-slate-800 leading-none">Vigilância Sanitária</h1>
                 <p className="text-xxs font-extrabold text-emerald-600 uppercase tracking-widest mt-1">Painel do Agente</p>

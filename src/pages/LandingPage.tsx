@@ -4,7 +4,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import { ChevronDown, ArrowRight, MapPin, Brain, Target } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import PageTransition from "@/components/PageTransition";
-import logo from "@/assets/logo.png";
+import { BrandLogo } from "@/components/BrandLogo";
 
 const LandingPage = () => {
   const navigate = useNavigate();
@@ -23,15 +23,15 @@ const LandingPage = () => {
 
         <div className="relative z-10 w-full max-w-lg flex flex-col items-center">
           {/* Logo */}
-          <motion.img
-            src={logo}
-            alt="ZIKA-MAPS"
-            className="w-56 h-56 mb-4 object-contain drop-shadow-lg"
+          <motion.div
+            className="mb-4 drop-shadow-lg"
             initial={{ scale: 0.85, opacity: 0 }}
             animate={{ scale: 1, opacity: 1 }}
             transition={{ duration: 0.7, ease: "easeOut" }}
             whileHover={{ scale: 1.03 }}
-          />
+          >
+            <BrandLogo size="xl" />
+          </motion.div>
 
           {/* Title */}
           <motion.h1

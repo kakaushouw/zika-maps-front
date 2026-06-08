@@ -12,7 +12,6 @@
 [![Cidade](https://img.shields.io/badge/cidade-Manaus%2C%20AM-4AADA8?style=flat-square)](#)
 [![React](https://img.shields.io/badge/React-18-61DAFB?style=flat-square&logo=react)](https://react.dev)
 [![TypeScript](https://img.shields.io/badge/TypeScript-5-3178C6?style=flat-square&logo=typescript)](https://typescriptlang.org)
-[![Supabase](https://img.shields.io/badge/Supabase-3ECF8E?style=flat-square&logo=supabase&logoColor=white)](https://supabase.com)
 [![Vite](https://img.shields.io/badge/Vite-5-646CFF?style=flat-square&logo=vite&logoColor=white)](https://vitejs.dev)
 
 [Reportar Bug](https://github.com/kakaushouw/zika-maps-front/issues) · [Solicitar Feature](https://github.com/kakaushouw/zika-maps-front/issues)
@@ -63,7 +62,7 @@ O sistema público de notificação (SINAN) é passivo e depende exclusivamente 
 
 ### 🎥 Vídeo Demonstrativo
 
-> **[VÍDEO DEMONSTRATIVO]** — *(link será adicionado aqui)*
+> **[VÍDEO DEMONSTRATIVO]** — *(https://youtu.be/tLx0F75abqw)*
 
 ---
 
@@ -84,10 +83,9 @@ O sistema público de notificação (SINAN) é passivo e depende exclusivamente 
 
 **Back-end & Banco de Dados**
 
-[![Supabase](https://img.shields.io/badge/Supabase-3ECF8E?style=flat-square&logo=supabase&logoColor=white)](https://supabase.com)
+[![FastAPI](https://img.shields.io/badge/FastAPI-009688?style=flat-square&logo=fastapi&logoColor=white)](https://fastapi.tiangolo.com)
 [![PostgreSQL](https://img.shields.io/badge/PostgreSQL-336791?style=flat-square&logo=postgresql&logoColor=white)](https://postgresql.org)
 [![Python](https://img.shields.io/badge/Python%203.11-3776AB?style=flat-square&logo=python&logoColor=white)](https://python.org)
-[![PostGIS](https://img.shields.io/badge/PostGIS-4AADA8?style=flat-square)](https://postgis.net)
 
 **Ferramentas & Infraestrutura**
 
@@ -99,14 +97,14 @@ O sistema público de notificação (SINAN) é passivo e depende exclusivamente 
 
 ## 🚀 Começando
 
-Este repositório contém o **front-end** do ZikaMaps. Para rodar o projeto localmente você precisa ter o Node.js instalado e configurar as variáveis de ambiente do Supabase.
+Este repositório contém o **front-end** do ZikaMaps. Para rodar localmente você precisa do Node.js e da API FastAPI rodando (repositório `zika-maps-back`).
 
 ### 📦 Pré-requisitos
 
 * [Node.js](https://nodejs.org/) `>= 18.x`
 * [npm](https://npmjs.com/) ou [bun](https://bun.sh/)
 * [Git](https://git-scm.com/)
-* Uma conta no [Supabase](https://supabase.com) *(ou use as credenciais do projeto)*
+* API FastAPI do ZikaMaps em execução (ex.: `http://127.0.0.1:5000`)
 
 ### 💻 Instalação
 
@@ -134,14 +132,18 @@ bun install
 
 4. **Configure as variáveis de ambiente**
 
-Crie um arquivo `.env` na raiz do projeto com o seguinte conteúdo:
-```env
-VITE_SUPABASE_URL=sua_url_do_supabase
-VITE_SUPABASE_PUBLISHABLE_KEY=sua_chave_anonima_do_supabase
-VITE_SUPABASE_PROJECT_ID=seu_project_id
+Copie o exemplo e ajuste se a API estiver em outra porta:
+```bash
+cp .env.example .env
 ```
 
-> ⚠️ Nunca compartilhe suas chaves reais publicamente. Você encontra essas informações no painel do Supabase em **Project Settings → API**.
+Conteúdo do `.env` (desenvolvimento local):
+```env
+VITE_API_URL=http://127.0.0.1:5000
+VITE_WS_URL=ws://127.0.0.1:5000/ws
+```
+
+Na **Vercel** (produção), defina as mesmas chaves com `https://api.zikamaps.com.br` e `wss://api.zikamaps.com.br/ws`.
 
 5. **Execute o projeto**
 
@@ -189,12 +191,11 @@ http://localhost:8080
 ├── 📁 src/                 # Código-fonte principal
 │   ├── 📁 components/      # Componentes React reutilizáveis
 │   ├── 📁 hooks/           # Custom hooks
-│   ├── 📁 integrations/    # Integrações externas (Supabase)
-│   ├── 📁 lib/             # Funções utilitárias
+│   ├── 📁 lib/             # API, store e utilitários
 │   ├── 📁 pages/           # Telas da aplicação
 │   └── 📄 main.tsx         # Ponto de entrada da aplicação
-├── 📁 supabase/            # Configurações e migrations do Supabase
-├── 📄 .env                 # Variáveis de ambiente (não commitar chaves reais)
+├── 📄 .env.example         # Modelo de variáveis (commitar)
+├── 📄 .env                 # Suas variáveis locais (não commitar — ver .gitignore)
 ├── 📄 index.html           # HTML principal
 ├── 📄 package.json         # Dependências e scripts do projeto
 ├── 📄 vite.config.ts       # Configuração do Vite
@@ -252,10 +253,10 @@ Este projeto está licenciado sob a licença **MIT**. Veja o arquivo [LICENSE](L
 
 | Nome | Papel | GitHub | LinkedIn | Email |
 |------|-------|--------|----------|-------|
-| Kaell Soares Calacina | Desenvolvedor & Documentador | [@kakaushouw](https://github.com/kakaushouw) | — | — |
-| Ana Lívia da Costa Silva | Documentadora e analista | [@liviacosttaa](https://github.com/liviacosttaa) | — | analiviasas@gmail.com |
+| Kaell Soares Calacina | Desenvolvedor & Documentador | [@kakaushouw](https://github.com/kakaushouw) | — | kaelcina@gmail.com |
+| Ana Lívia da Costa Silva | Documentadora e analista | [@liviacosttaa](https://github.com/liviacosttaa) | [LinkedIn](https://www.linkedin.com/in/liviacossttaa?utm_source=share&utm_campaign=share_via&utm_content=profile&utm_medium=ios_app) | analiviasas@gmail.com |
 | Vitória Santos de Azevedo | Testadora & Documentadora | [@csvick](https://github.com/csvick) | — | vitoriaazevedo.r91@gmail.com |
-| Luiz Henrique Moutinho Laranjeira | Documentador | [@luizhmoutinho](https://github.com/luizhmoutinho) | — | luizhmoutinho@gmail.com |
+| Luiz Henrique Moutinho Laranjeira | Documentador e analista | [@luizhmoutinho](https://github.com/luizhmoutinho) | [LinkedIn](https://www.linkedin.com/in/luizhmoutinho?utm_source=share&utm_campaign=share_via&utm_content=profile&utm_medium=android_app) | luizhmoutinho@gmail.com |
 | João Etto de Souza Gomes | Designer & Documentador | [@JoaoEtto](https://github.com/JoaoEtto) | [LinkedIn](https://www.linkedin.com/in/joão-etto-7b6775323) | joaoettogomes@gmail.com |
 
 **Orientadora:** Luana Magalhães Leal — prof.luanalealm@gmail.com

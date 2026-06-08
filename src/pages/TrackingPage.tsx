@@ -4,6 +4,7 @@ import { motion } from "framer-motion";
 import { ArrowLeft, Calendar, MapPin, ChevronRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import PageTransition from "@/components/PageTransition";
+import { BrandLogo } from "@/components/BrandLogo";
 import StatusBadge from "@/components/StatusBadge";
 import { useReports, startReportsSync, useAuth } from "@/lib/store";
 
@@ -36,7 +37,8 @@ const TrackingPage = () => {
             >
               <ArrowLeft className="h-5 w-5" />
             </Button>
-            <h1 className="font-heading text-lg font-extrabold text-foreground">Minhas Denúncias</h1>
+            <BrandLogo size="xs" />
+            <h1 className="font-heading text-lg font-extrabold text-foreground flex-1">Minhas Denúncias</h1>
           </div>
         </div>
 
