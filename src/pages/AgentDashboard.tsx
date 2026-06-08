@@ -575,7 +575,7 @@ const ReportCard = ({
               }}
               className="flex items-center gap-2 px-4 py-2 rounded-xl text-xs font-extrabold transition-all text-white shadow-sm hover:shadow-md"
               style={{
-                background: "linear-gradient(135deg, #10b981, #059669)",
+                backgroundColor: "hsl(var(--primary))",
               }}
             >
               Alterar Status
@@ -622,7 +622,7 @@ const AgentActionDropdown = ({ report, onDone }: { report: Report; onDone: () =>
         onClick={() => setOpen(!open)}
         className="w-full flex items-center justify-center gap-2 py-3.5 rounded-2xl font-extrabold text-sm transition-all text-white shadow-sm hover:shadow-md"
         style={{
-          background: "linear-gradient(135deg, #10b981, #059669)",
+          backgroundColor: "hsl(var(--primary))",
         }}
       >
         <Shield className="h-4 w-4 stroke-[2]" />

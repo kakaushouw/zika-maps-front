@@ -139,7 +139,7 @@ const LandingPage = () => {
               onClick={() => navigate("/login")}
               className="w-full text-white font-bold text-sm h-12 rounded-xl transition-all duration-300 hover:opacity-95 hover:scale-[1.01] gap-2"
               style={{
-                background: "var(--gradient-hero)",
+                backgroundColor: "hsl(var(--primary))",
                 boxShadow: "0 10px 25px -5px hsl(152 55% 38% / 0.4)"
               }}
             >

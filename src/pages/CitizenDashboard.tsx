@@ -66,7 +66,7 @@ const CitizenDashboard = () => {
               onClick={() => navigate("/report")}
               className="w-full py-8 text-lg font-extrabold rounded-xl transition-all duration-300"
               style={{
-                background: "var(--gradient-hero)",
+                backgroundColor: "hsl(var(--primary))",
                 color: "white",
                 boxShadow: "0 10px 25px -5px hsl(152 55% 38% / 0.4)"
               }}

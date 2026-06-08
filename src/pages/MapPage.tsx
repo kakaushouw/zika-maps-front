@@ -130,7 +130,7 @@ const MapPage = () => {
             onClick={() => navigate(-1)}
             className="text-white font-bold shadow-xl px-8 py-5 rounded-xl hover:opacity-95 hover:scale-[1.02] transition-all"
             style={{
-              background: "var(--gradient-hero)",
+              backgroundColor: "hsl(var(--primary))",
               boxShadow: "0 8px 24px -4px hsl(152 55% 38% / 0.4)"
             }}
           >

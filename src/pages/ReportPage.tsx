@@ -313,7 +313,7 @@ const ReportPage = () => {
                     onClick={confirmMapPicker}
                     className="w-full text-white font-bold h-11 rounded-xl transition-all duration-300 hover:opacity-95"
                     style={{
-                      background: "var(--gradient-hero)",
+                      backgroundColor: "hsl(var(--primary))",
                       boxShadow: "0 8px 20px -4px hsl(152 55% 38% / 0.3)"
                     }}
                   >
@@ -375,7 +375,7 @@ const ReportPage = () => {
               disabled={gpsStatus === "loading"}
               className="flex-1 text-white font-bold h-11 rounded-xl hover:opacity-95 transition-all duration-300"
               style={{
-                background: "var(--gradient-hero)",
+                backgroundColor: "hsl(var(--primary))",
                 boxShadow: "0 8px 20px -4px hsl(152 55% 38% / 0.3)"
               }}
             >
